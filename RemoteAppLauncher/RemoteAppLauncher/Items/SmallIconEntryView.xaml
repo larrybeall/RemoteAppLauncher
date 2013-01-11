@@ -1,0 +1,14 @@
+﻿<UserControl x:Class="RemoteAppLauncher.Items.SmallIconEntryView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:converters="clr-namespace:RemoteAppLauncher.Converters">
+    <UserControl.Resources>
+        <converters:TreeViewItemToImageSourceConverter x:Key="treeViewItemConverter" />
+    </UserControl.Resources>
+    <StackPanel Orientation="Horizontal">
+        <Image Height="16" Width="16" Source="{Binding Converter={StaticResource treeViewItemConverter}, ConverterParameter=true}" />
+        <TextBlock Text="{Binding Name}" VerticalAlignment="Center" />
+    </StackPanel>
+</UserControl>

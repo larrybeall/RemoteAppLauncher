@@ -45,6 +45,7 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Interactivity">
       <HintPath>..\packages\MahApps.Metro.0.10.0.0\lib\net40\System.Windows.Interactivity.dll</HintPath>
     </Reference>
@@ -65,6 +66,36 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\DirectoryToImageSourceConverter.cs" />
+    <Compile Include="Converters\NotEqualNullConverter.cs" />
+    <Compile Include="Converters\PathToImageSourceConverter.cs" />
+    <Compile Include="Converters\TreeViewItemToImageSourceConverter.cs" />
+    <Compile Include="Infrastructure\IconUtility.cs" />
+    <Compile Include="Infrastructure\PathUtility.cs" />
+    <Compile Include="Items\DirectoryItemViewModel.cs" />
+    <Compile Include="Items\DisplayEntryViewModel.cs" />
+    <Compile Include="Items\FileItemViewModel.cs" />
+    <Compile Include="Items\LargeIconEntryViewModel.xaml.cs">
+      <DependentUpon>LargeIconEntryViewModel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Items\SmallIconEntryView.xaml.cs">
+      <DependentUpon>SmallIconEntryView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Items\TreeViewItemViewModel.cs" />
+    <Compile Include="Models\DirectoryEntry.cs" />
+    <Compile Include="Screens\BrowserView.xaml.cs">
+      <DependentUpon>BrowserView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\BrowserViewModel.cs" />
+    <Compile Include="Screens\ObservableCollection.cs" />
+    <Compile Include="Screens\SearchResultsView.xaml.cs">
+      <DependentUpon>SearchResultsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\SearchResultsViewModel.cs" />
+    <Compile Include="Screens\UsageBasedView.xaml.cs">
+      <DependentUpon>UsageBasedView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\UsageBasedViewModel.cs" />
     <Compile Include="ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
     </Compile>
@@ -74,9 +105,29 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="AppBootstrapper.cs" />
+    <Page Include="Items\LargeIconEntryViewModel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Items\SmallIconEntryView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Resources\Icons.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Screens\BrowserView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Screens\SearchResultsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Screens\UsageBasedView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ShellView.xaml">
       <SubType>Designer</SubType>
