@@ -62,5 +62,15 @@ namespace RemoteAppLauncher
             else
                 ChangeActiveItem(_usageBasedViewModel, false);
         }
+
+        internal void Reset()
+        {
+            ChangeActiveItem(_usageBasedViewModel, false);
+            if (AllProgramsChecked)
+            {
+                _allProgramsChecked = false;
+                NotifyOfPropertyChange(() => AllProgramsChecked);
+            }
+        }
     }
 }

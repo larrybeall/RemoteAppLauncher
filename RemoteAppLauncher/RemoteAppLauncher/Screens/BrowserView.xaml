@@ -6,7 +6,7 @@
              xmlns:items="clr-namespace:RemoteAppLauncher.Items"
              xmlns:micro="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro">
     <Grid>
-        <TreeView x:Name="Entries" BorderThickness="0">
+        <TreeView x:Name="Entries" BorderThickness="0" micro:Message.Attach="[Event SelectedItemChanged] = [Action OnSelectionChanged($eventArgs)]">
             <TreeView.ItemContainerStyle>
                 <Style TargetType="TreeViewItem">
                     <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />

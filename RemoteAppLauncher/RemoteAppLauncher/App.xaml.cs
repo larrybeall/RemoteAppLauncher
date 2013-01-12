@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RemoteAppLauncher.Infrastructure;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -16,6 +17,11 @@ namespace RemoteAppLauncher
         public App()
         {
             InitializeComponent();
+        }
+
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
         }
     }
 }

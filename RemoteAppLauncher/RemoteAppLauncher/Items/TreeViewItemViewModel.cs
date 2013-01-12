@@ -72,7 +72,7 @@ namespace RemoteAppLauncher.Items
                     _parent.IsExpanded = true;
 
                 // Lazy load the child items, if necessary.
-                if (this.HasDummyChild)
+                if (_isExpanded && this.HasDummyChild)
                 {
                     this.Children.Remove(DummyChild);
                     this.LoadChildren();
@@ -102,5 +102,16 @@ namespace RemoteAppLauncher.Items
             
         }
 
+        internal void CollapseAll()
+        {
+            IsExpanded = false;
+            if (!HasDummyChild && Children.Count > 0)
+            {
+                foreach (var treeViewItemViewModel in Children)
+                {
+                    treeViewItemViewModel.CollapseAll();
+                }
+            }
+        }
     }
 }

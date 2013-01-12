@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Threading;
+using System.Windows;
 using Caliburn.Micro;
 using System;
 using System.Collections.Generic;
@@ -83,6 +84,35 @@ namespace RemoteAppLauncher.Screens
         {
             _entries.AddRange(entries);
             Loading = false;
+        }
+
+        public void OnSelectionChanged(RoutedPropertyChangedEventArgs<object> args)
+        {
+            if(args.NewValue == null)
+                return;
+
+            ((TreeViewItemViewModel) args.NewValue).IsSelected = false;
+
+            var fileItem = args.NewValue as FileItemViewModel;
+            if(fileItem == null)
+                return;
+
+            fileItem.Execute();
+
+            App.Current.Dispatcher.InvokeAsync(() =>
+                {
+                    foreach (var treeViewItemViewModel in Entries)
+                    {
+                        if (!treeViewItemViewModel.IsExpanded)
+                            continue;
+
+                        treeViewItemViewModel.CollapseAll();
+                    }
+
+                    ShellViewModel shell = Parent as ShellViewModel;
+                    if (shell != null)
+                        shell.Reset();
+                });
         }
     }
 }

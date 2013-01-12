@@ -81,6 +81,39 @@ namespace RemoteAppLauncher.Infrastructure
             }
         }
 
+        public static IEnumerable<DirectoryEntry> GetAllFileEntries()
+        {
+            string commonStartMenu = Environment.GetFolderPath(Environment.SpecialFolder.CommonStartMenu);
+            string userStartMenu = Environment.GetFolderPath(Environment.SpecialFolder.StartMenu);
+
+            commonStartMenu = Path.Combine(commonStartMenu, "Programs");
+            userStartMenu = Path.Combine(userStartMenu, "Programs");
+
+            var toReturn = new List<DirectoryEntry>();
+
+            WalkTree(commonStartMenu, toReturn);
+            WalkTree(userStartMenu, toReturn);
+
+            return toReturn;
+        }
+
+        private static void WalkTree(string path, ICollection<DirectoryEntry> foundFiles)
+        {
+            var entries = GetDirectoryEntries(path);
+            foreach (var directoryEntry in entries)
+            {
+                if (!directoryEntry.IsDirectory)
+                {
+                    if(foundFiles.All(x => x.Paths[0] != directoryEntry.Paths[0]))
+                        foundFiles.Add(directoryEntry);
+
+                    continue;
+                }
+
+                WalkTree(directoryEntry.Paths[0], foundFiles);
+            }
+        }
+
         private static DirectoryEntry CreateEntry(string path, bool isDirectory)
         {
             string name = (isDirectory)
