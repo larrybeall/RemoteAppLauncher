@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using RemoteAppLauncher.Models;
+using RemoteAppLauncher.Data.Models;
 using RemoteAppLauncher.Infrastructure;
 
-namespace RemoteAppLauncher.Items
+namespace RemoteAppLauncher.Presentation.Items
 {
     public class DirectoryItemViewModel : TreeViewItemViewModel
     {

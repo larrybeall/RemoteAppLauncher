@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RemoteAppLauncher.Screens
+namespace RemoteAppLauncher.Data
 {
-    class SearchResultsViewModel
+    class PersistedItemService
     {
     }
 }

@@ -1,12 +1,8 @@
 ﻿using RemoteAppLauncher.Infrastructure;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Data;
 
-namespace RemoteAppLauncher.Converters
+namespace RemoteAppLauncher.Presentation.Converters
 {
     public class DirectoryToImageSourceConverter : IValueConverter
     {

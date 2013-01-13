@@ -66,37 +66,40 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Converters\DirectoryToImageSourceConverter.cs" />
-    <Compile Include="Converters\NotEqualNullConverter.cs" />
-    <Compile Include="Converters\PathToImageSourceConverter.cs" />
-    <Compile Include="Converters\TreeViewItemToImageSourceConverter.cs" />
+    <Compile Include="Data\Models\PersistedFileItem.cs" />
+    <Compile Include="Data\PersistedItemRepository.cs" />
+    <Compile Include="Data\PersistedItemService.cs" />
+    <Compile Include="Presentation\Converters\DirectoryToImageSourceConverter.cs" />
+    <Compile Include="Presentation\Converters\NotEqualNullConverter.cs" />
+    <Compile Include="Presentation\Converters\PathToImageSourceConverter.cs" />
+    <Compile Include="Presentation\Converters\TreeViewItemToImageSourceConverter.cs" />
     <Compile Include="Infrastructure\IconUtility.cs" />
     <Compile Include="Infrastructure\PathUtility.cs" />
     <Compile Include="Infrastructure\ProcessUtility.cs" />
-    <Compile Include="Items\DirectoryItemViewModel.cs" />
-    <Compile Include="Items\DisplayEntryViewModel.cs" />
-    <Compile Include="Items\FileItemViewModel.cs" />
-    <Compile Include="Items\LargeIconEntryView.xaml.cs">
+    <Compile Include="Presentation\Items\DirectoryItemViewModel.cs" />
+    <Compile Include="Presentation\Items\DisplayEntryViewModel.cs" />
+    <Compile Include="Presentation\Items\FileItemViewModel.cs" />
+    <Compile Include="Presentation\Items\LargeIconEntryView.xaml.cs">
       <DependentUpon>LargeIconEntryView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Items\SmallIconEntryView.xaml.cs">
+    <Compile Include="Presentation\Items\SmallIconEntryView.xaml.cs">
       <DependentUpon>SmallIconEntryView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Items\TreeViewItemViewModel.cs" />
-    <Compile Include="Models\DirectoryEntry.cs" />
-    <Compile Include="Screens\BrowserView.xaml.cs">
+    <Compile Include="Presentation\Items\TreeViewItemViewModel.cs" />
+    <Compile Include="Data\Models\DirectoryEntry.cs" />
+    <Compile Include="Presentation\Screens\BrowserView.xaml.cs">
       <DependentUpon>BrowserView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Screens\BrowserViewModel.cs" />
-    <Compile Include="Screens\ObservableCollection.cs" />
-    <Compile Include="Screens\SearchResultsView.xaml.cs">
+    <Compile Include="Presentation\Screens\BrowserViewModel.cs" />
+    <Compile Include="Presentation\Screens\ObservableCollection.cs" />
+    <Compile Include="Presentation\Screens\SearchResultsView.xaml.cs">
       <DependentUpon>SearchResultsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Screens\SearchResultsViewModel.cs" />
-    <Compile Include="Screens\UsageBasedView.xaml.cs">
+    <Compile Include="Presentation\Screens\SearchResultsViewModel.cs" />
+    <Compile Include="Presentation\Screens\UsageBasedView.xaml.cs">
       <DependentUpon>UsageBasedView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Screens\UsageBasedViewModel.cs" />
+    <Compile Include="Presentation\Screens\UsageBasedViewModel.cs" />
     <Compile Include="ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
     </Compile>
@@ -106,11 +109,11 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="AppBootstrapper.cs" />
-    <Page Include="Items\LargeIconEntryView.xaml">
+    <Page Include="Presentation\Items\LargeIconEntryView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Items\SmallIconEntryView.xaml">
+    <Page Include="Presentation\Items\SmallIconEntryView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -118,15 +121,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Screens\BrowserView.xaml">
+    <Page Include="Presentation\Screens\BrowserView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Screens\SearchResultsView.xaml">
+    <Page Include="Presentation\Screens\SearchResultsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Screens\UsageBasedView.xaml">
+    <Page Include="Presentation\Screens\UsageBasedView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

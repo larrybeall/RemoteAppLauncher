@@ -1,12 +1,7 @@
-﻿using RemoteAppLauncher.Models;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
+using RemoteAppLauncher.Data.Models;
 
-namespace RemoteAppLauncher.Items
+namespace RemoteAppLauncher.Presentation.Items
 {
     public class FileItemViewModel : TreeViewItemViewModel
     {

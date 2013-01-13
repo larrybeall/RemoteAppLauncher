@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace RemoteAppLauncher.Models
+﻿namespace RemoteAppLauncher.Data.Models
 {
     internal class PersistedFileItem
     {

@@ -1,11 +1,11 @@
 ﻿using Caliburn.Micro;
 using RemoteAppLauncher.Infrastructure;
-using RemoteAppLauncher.Screens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using RemoteAppLauncher.Presentation.Screens;
 
 namespace RemoteAppLauncher
 {

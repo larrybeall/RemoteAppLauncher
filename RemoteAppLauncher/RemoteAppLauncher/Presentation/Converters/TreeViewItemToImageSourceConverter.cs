@@ -1,12 +1,8 @@
-﻿using RemoteAppLauncher.Items;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 using System.Windows.Data;
+using RemoteAppLauncher.Presentation.Items;
 
-namespace RemoteAppLauncher.Converters
+namespace RemoteAppLauncher.Presentation.Converters
 {
     public class TreeViewItemToImageSourceConverter : IValueConverter
     {

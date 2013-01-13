@@ -1,19 +1,16 @@
-﻿using System.Collections;
-using System.Threading;
+﻿using System.Threading;
 using System.Windows;
 using Caliburn.Micro;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using RemoteAppLauncher.Data.Models;
 using RemoteAppLauncher.Infrastructure;
-using RemoteAppLauncher.Items;
-using RemoteAppLauncher.Models;
 using System.IO;
+using RemoteAppLauncher.Presentation.Items;
 
-namespace RemoteAppLauncher.Screens
+namespace RemoteAppLauncher.Presentation.Screens
 {
     public class BrowserViewModel : Screen
     {
