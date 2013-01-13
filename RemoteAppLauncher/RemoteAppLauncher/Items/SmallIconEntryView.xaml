@@ -8,7 +8,7 @@
         <converters:TreeViewItemToImageSourceConverter x:Key="treeViewItemConverter" />
     </UserControl.Resources>
     <StackPanel Orientation="Horizontal">
-        <Image Height="16" Width="16" Source="{Binding Converter={StaticResource treeViewItemConverter}, ConverterParameter=true}" Margin="0 4 4 4" />
+        <Image Height="16" Width="16" Source="{Binding Converter={StaticResource treeViewItemConverter}, ConverterParameter=true}" />
         <TextBlock Text="{Binding Name}" VerticalAlignment="Center" />
     </StackPanel>
 </UserControl>

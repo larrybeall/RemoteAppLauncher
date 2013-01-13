@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using RemoteAppLauncher.Infrastructure;
 using RemoteAppLauncher.Screens;
 using System;
 using System.Collections.Generic;
@@ -10,10 +11,10 @@ namespace RemoteAppLauncher
 {
     public class ShellViewModel : Conductor<IScreen>.Collection.OneActive
     {
-        private string _searchString;
-        private bool _allProgramsChecked;
+        private string _filterString;
         private readonly UsageBasedViewModel _usageBasedViewModel;
         private readonly BrowserViewModel _browserViewModel;
+        private bool _allAppsVisible;
 
         public ShellViewModel()
         {
@@ -31,46 +32,48 @@ namespace RemoteAppLauncher
             }
         }
 
-        public string SearchString
+        public string FilterString
         {
-            get { return _searchString; }
+            get { return _filterString; }
             set {
-                if (_searchString == value) return;
+                if (_filterString == value) return;
 
-                _searchString = value;
-                NotifyOfPropertyChange(() => SearchString);
+                _filterString = value;
+                NotifyOfPropertyChange(() => FilterString);
             }
         }
 
-        public bool AllProgramsChecked
+        public bool AllAppsVisible
         {
-            get { return _allProgramsChecked; }
-            set 
-            {
-                if (_allProgramsChecked == value) return;
-
-                _allProgramsChecked = value;
-                NotifyOfPropertyChange(() => AllProgramsChecked);
-                HandleAllProgramsCheckedChange(value);
-            }
+            get { return _allAppsVisible; }
+            set { _allAppsVisible = value; NotifyOfPropertyChange(() => AllAppsVisible); }
         }
 
-        private void HandleAllProgramsCheckedChange(bool isChecked)
+        public void OpenControlPanel()
         {
-            if (isChecked)
-                ChangeActiveItem(_browserViewModel, false);
-            else
-                ChangeActiveItem(_usageBasedViewModel, false);
+            ProcessUtility.OpenControlPanel();
+        }
+
+        public void OpenFileExplorer()
+        {
+            ProcessUtility.OpenFileExplorer();
+        }
+
+        public void ShowAllApplications()
+        {
+            AllAppsVisible = true;
+            ChangeActiveItem(_browserViewModel, false);
+        }
+
+        public void HideAllApplications()
+        {
+            AllAppsVisible = false;
+            ChangeActiveItem(_usageBasedViewModel, false);
         }
 
         internal void Reset()
         {
-            ChangeActiveItem(_usageBasedViewModel, false);
-            if (AllProgramsChecked)
-            {
-                _allProgramsChecked = false;
-                NotifyOfPropertyChange(() => AllProgramsChecked);
-            }
+            HideAllApplications();
         }
     }
 }

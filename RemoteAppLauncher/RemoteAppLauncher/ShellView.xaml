@@ -3,9 +3,14 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:local="clr-namespace:RemoteAppLauncher.Converters"
+<<<<<<< HEAD
                       xmlns:micro="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
                       Title="ShellView" Height="450" Width="350"
         ShowMaxRestoreButton="False" UseLayoutRounding="True" TitleForeground="#999988">
+=======
+        Title="ShellView" Height="450" Width="350"
+        ShowMaxRestoreButton="False" Background="{DynamicResource AccentColorBrush}">
+>>>>>>> parent of 67da62a... Added RenderOptions set to HighQuality and enabled layout rounding to help fix the blurry icon images.
     <controls:MetroWindow.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
