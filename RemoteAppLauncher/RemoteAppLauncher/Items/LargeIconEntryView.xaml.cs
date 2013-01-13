@@ -18,9 +18,9 @@ namespace RemoteAppLauncher.Items
     /// <summary>
     /// Interaction logic for LargeIconEntryViewModel.xaml
     /// </summary>
-    public partial class LargeIconEntryViewModel : UserControl
+    public partial class LargeIconEntryView : UserControl
     {
-        public LargeIconEntryViewModel()
+        public LargeIconEntryView()
         {
             InitializeComponent();
         }

@@ -6,7 +6,11 @@
              xmlns:items="clr-namespace:RemoteAppLauncher.Items"
              xmlns:micro="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro">
     <Grid>
-        <TreeView x:Name="Entries" BorderThickness="0" micro:Message.Attach="[Event SelectedItemChanged] = [Action OnSelectionChanged($eventArgs)]">
+        <TreeView 
+            x:Name="Entries"
+            BorderThickness="0"
+            Background="Transparent"
+            micro:Message.Attach="[Event SelectedItemChanged] = [Action OnSelectionChanged($eventArgs)]">
             <TreeView.ItemContainerStyle>
                 <Style TargetType="TreeViewItem">
                     <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
@@ -17,10 +21,10 @@
                 <HierarchicalDataTemplate 
                     DataType="{x:Type items:DirectoryItemViewModel}" 
                     ItemsSource="{Binding Children}">
-                    <items:SmallIconEntryView micro:Bind.Model="{Binding}" />
+                    <items:LargeIconEntryView micro:Bind.Model="{Binding}" />
                 </HierarchicalDataTemplate>
                 <DataTemplate DataType="{x:Type items:FileItemViewModel}">
-                    <items:SmallIconEntryView micro:Bind.Model="{Binding}" />
+                    <items:LargeIconEntryView micro:Bind.Model="{Binding}" />
                 </DataTemplate>
             </TreeView.Resources>
         </TreeView>

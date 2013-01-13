@@ -72,11 +72,12 @@
     <Compile Include="Converters\TreeViewItemToImageSourceConverter.cs" />
     <Compile Include="Infrastructure\IconUtility.cs" />
     <Compile Include="Infrastructure\PathUtility.cs" />
+    <Compile Include="Infrastructure\ProcessUtility.cs" />
     <Compile Include="Items\DirectoryItemViewModel.cs" />
     <Compile Include="Items\DisplayEntryViewModel.cs" />
     <Compile Include="Items\FileItemViewModel.cs" />
-    <Compile Include="Items\LargeIconEntryViewModel.xaml.cs">
-      <DependentUpon>LargeIconEntryViewModel.xaml</DependentUpon>
+    <Compile Include="Items\LargeIconEntryView.xaml.cs">
+      <DependentUpon>LargeIconEntryView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Items\SmallIconEntryView.xaml.cs">
       <DependentUpon>SmallIconEntryView.xaml</DependentUpon>
@@ -105,7 +106,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="AppBootstrapper.cs" />
-    <Page Include="Items\LargeIconEntryViewModel.xaml">
+    <Page Include="Items\LargeIconEntryView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
