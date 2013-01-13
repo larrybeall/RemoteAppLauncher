@@ -49,7 +49,7 @@ namespace RemoteAppLauncher.Infrastructure
             return entries;
         }
 
-        public static IEnumerable<DirectoryEntry> GetDirectoryEntries(string path)
+        public static IEnumerable<DirectoryEntry> GetDirectoryEntries(string path, string parentDirectory = null)
         {
             if (string.IsNullOrEmpty(path) || !IsPathDirectory(path))
                 throw new ArgumentException("path");
@@ -59,7 +59,7 @@ namespace RemoteAppLauncher.Infrastructure
             {
                 foreach (var entry in entries)
                 {
-                    var dirEntry = CreateEntry(entry, true);
+                    var dirEntry = CreateEntry(entry, parentDirectory, true);
                     if(dirEntry.Name.Equals("desktop", StringComparison.InvariantCultureIgnoreCase))
                         continue;
 
@@ -72,7 +72,7 @@ namespace RemoteAppLauncher.Infrastructure
             {
                 foreach (var entry in entries)
                 {
-                    var dirEntry = CreateEntry(entry, IsPathDirectory(entry));
+                    var dirEntry = CreateEntry(entry, parentDirectory, IsPathDirectory(entry));
                     if (dirEntry.Name.Equals("desktop", StringComparison.InvariantCultureIgnoreCase))
                         continue;
 
@@ -80,7 +80,7 @@ namespace RemoteAppLauncher.Infrastructure
                 }
             }
         }
-
+        
         public static IEnumerable<DirectoryEntry> GetAllFileEntries()
         {
             string commonStartMenu = Environment.GetFolderPath(Environment.SpecialFolder.CommonStartMenu);
@@ -97,9 +97,12 @@ namespace RemoteAppLauncher.Infrastructure
             return toReturn;
         }
 
-        private static void WalkTree(string path, ICollection<DirectoryEntry> foundFiles)
+        private static void WalkTree(string path, ICollection<DirectoryEntry> foundFiles, string parentDirectory = null)
         {
-            var entries = GetDirectoryEntries(path);
+            if (string.IsNullOrEmpty(parentDirectory) || parentDirectory.Equals("programs", StringComparison.InvariantCultureIgnoreCase))
+                parentDirectory = Path.GetFileName(path);
+
+            var entries = GetDirectoryEntries(path, parentDirectory);
             foreach (var directoryEntry in entries)
             {
                 if (!directoryEntry.IsDirectory)
@@ -110,11 +113,11 @@ namespace RemoteAppLauncher.Infrastructure
                     continue;
                 }
 
-                WalkTree(directoryEntry.Paths[0], foundFiles);
+                WalkTree(directoryEntry.Paths[0], foundFiles, parentDirectory);
             }
         }
 
-        private static DirectoryEntry CreateEntry(string path, bool isDirectory)
+        private static DirectoryEntry CreateEntry(string path, string parentDirectory, bool isDirectory)
         {
             string name = (isDirectory)
                               ? Path.GetFileName(path)
@@ -124,7 +127,8 @@ namespace RemoteAppLauncher.Infrastructure
                 {
                     IsDirectory = isDirectory,
                     Name = name,
-                    Paths = new List<string>{ path }
+                    Paths = new List<string>{ path },
+                    ParentDirectory = parentDirectory
                 };
         }
     }

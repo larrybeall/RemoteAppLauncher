@@ -8,5 +8,6 @@ namespace RemoteAppLauncher.Data.Models
         public List<String> Paths { get; set; }
         public string Name { get; set; }
         public bool IsDirectory { get; set; }
+        public string ParentDirectory { get; set; }
     }
 }
