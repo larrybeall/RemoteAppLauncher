@@ -4,7 +4,7 @@
         xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:local="clr-namespace:RemoteAppLauncher.Converters"
         Title="ShellView" Height="450" Width="350"
-        ShowMaxRestoreButton="False" Background="{DynamicResource AccentColorBrush}">
+        ShowMaxRestoreButton="False" Background="{DynamicResource AccentColorBrush}" UseLayoutRounding="True">
     <controls:MetroWindow.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

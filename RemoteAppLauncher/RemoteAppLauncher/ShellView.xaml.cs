@@ -22,6 +22,7 @@ namespace RemoteAppLauncher
     {
         public ShellView()
         {
+            RenderOptions.SetBitmapScalingMode(this, BitmapScalingMode.HighQuality);
             InitializeComponent();
         }
     }
