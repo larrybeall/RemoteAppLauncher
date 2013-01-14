@@ -14,7 +14,7 @@ namespace RemoteAppLauncher
     {
         private string _filterString;
         private readonly UsageBasedViewModel _usageBasedViewModel;
-        private readonly BrowserViewModel _browserViewModel;
+        private readonly AllApplicationsViewModel _allApplicationsViewModel;
         private readonly PersistedItemService _fileService;
         private bool _allAppsVisible;
         private bool _initializing;
@@ -23,7 +23,7 @@ namespace RemoteAppLauncher
         {
             _fileService = new PersistedItemService();
             _usageBasedViewModel = new UsageBasedViewModel();
-            _browserViewModel = new BrowserViewModel();
+            _allApplicationsViewModel = new AllApplicationsViewModel();
 
             ActivateItem(_usageBasedViewModel);
         }
@@ -75,7 +75,7 @@ namespace RemoteAppLauncher
         public void ShowAllApplications()
         {
             AllAppsVisible = true;
-            ChangeActiveItem(_browserViewModel, false);
+            ChangeActiveItem(_allApplicationsViewModel, false);
         }
 
         public void HideAllApplications()

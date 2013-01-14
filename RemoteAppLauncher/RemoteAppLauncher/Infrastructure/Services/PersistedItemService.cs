@@ -27,7 +27,7 @@ namespace RemoteAppLauncher.Infrastructure.Services
 
         public void GetAllItems(Action<IEnumerable<PersistedFileItem>> onComplete)
         {
-            if (_allItems.Count > 0)
+            if (_allItems != null && _allItems.Count > 0)
             {
                 _allItemsTimer.Stop();
                 _allItemsTimer.Start();

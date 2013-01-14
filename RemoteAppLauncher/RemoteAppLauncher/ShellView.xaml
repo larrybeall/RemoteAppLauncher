@@ -15,7 +15,7 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/VS/Styles.xaml"/>
                 <ResourceDictionary Source="/Resources/Icons.xaml" />
                 <ResourceDictionary>
-                    
+                    <SolidColorBrush x:Key="InitializingBackground" Color="{DynamicResource Gray2}" />
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
@@ -134,8 +134,29 @@
                 </Button.Content>
             </Button>
         </DockPanel>
-        <Border Background="Tomato">
-            
+        <Border Background="{DynamicResource InitializingBackground}" Opacity=".7" Grid.Row="0" Grid.RowSpan="2">
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Initializing}" Value="True">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+            <controls:ProgressRing>
+                <controls:ProgressRing.Style>
+                    <Style TargetType="controls:ProgressRing">
+                        <Setter Property="IsActive" Value="False" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Initializing}" Value="True">
+                                <Setter Property="IsActive" Value="True"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </controls:ProgressRing.Style>
+            </controls:ProgressRing>
         </Border>
     </Grid>
 </controls:MetroWindow>

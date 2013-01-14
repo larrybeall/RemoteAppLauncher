@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Dapper;
 using System.Data.SqlServerCe;
 using RemoteAppLauncher.Properties;
+using System.Reflection;
 
 namespace RemoteAppLauncher.Data
 {
@@ -19,12 +20,16 @@ namespace RemoteAppLauncher.Data
         private static object _syncRoot = new Object();
 
         private readonly string _dbPath;
+        private readonly string _dbFilePath;
         private readonly string _cnString;
 
         private DataConfigManager()
         {
-            _dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "launcher.sdf");
-            _cnString = string.Format("Data Source={0};", _dbPath);
+            string company = GetAssemblyAttribute<AssemblyCompanyAttribute>(a => a.Company);
+            string title = GetAssemblyAttribute<AssemblyTitleAttribute>(a => a.Title);
+            _dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), company, title);
+            _dbFilePath = Path.Combine(_dbPath, "launcher.sdf");
+            _cnString = string.Format("Data Source={0};", _dbFilePath);
             Init();
         }
 
@@ -52,8 +57,11 @@ namespace RemoteAppLauncher.Data
 
         private void Init()
         {
-            if (File.Exists(_dbPath))
+            if (File.Exists(_dbFilePath))
                 return;
+
+            if(!Directory.Exists(_dbPath))
+                Directory.CreateDirectory(_dbPath);
 
             using (SqlCeEngine engine = new SqlCeEngine(_cnString))
             {
@@ -68,6 +76,13 @@ namespace RemoteAppLauncher.Data
                 cn.Execute(Resources.PersistedItemCreateIndex);
                 cn.Close();
             }
+        }
+
+        public string GetAssemblyAttribute<T>(Func<T, string> value)
+            where T : Attribute
+        {
+            T attribute = (T)Attribute.GetCustomAttribute(Assembly.GetExecutingAssembly(), typeof(T));
+            return value.Invoke(attribute);
         }
     }
 }

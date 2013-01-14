@@ -2,7 +2,7 @@
 
 namespace RemoteAppLauncher.Data.Models
 {
-    internal class PersistedFileItem
+    public class PersistedFileItem
     {
         public PersistedFileItem()
         {}

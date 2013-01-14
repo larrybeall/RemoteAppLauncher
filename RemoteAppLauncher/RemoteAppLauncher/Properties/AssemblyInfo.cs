@@ -10,7 +10,7 @@ using System.Windows;
 [assembly: AssemblyTitle("RemoteAppLauncher")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Phoenix Powered")]
 [assembly: AssemblyProduct("RemoteAppLauncher")]
 [assembly: AssemblyCopyright("Copyright ©  2013")]
 [assembly: AssemblyTrademark("")]

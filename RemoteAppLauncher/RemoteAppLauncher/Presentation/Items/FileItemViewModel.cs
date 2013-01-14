@@ -1,18 +1,23 @@
 ﻿using System.Diagnostics;
 using RemoteAppLauncher.Data.Models;
+using Caliburn.Micro;
 
 namespace RemoteAppLauncher.Presentation.Items
 {
-    public class FileItemViewModel : TreeViewItemViewModel
+    public class FileItemViewModel : DirectoryItemViewModel
     {
         private string _path;
         private string _name;
+        private string _directory;
 
-        public FileItemViewModel(DirectoryEntry entry, TreeViewItemViewModel parent = null)
-            : base(parent, false)
+        public FileItemViewModel()
+        {}
+
+        public FileItemViewModel(PersistedFileItem entry)
+            : base(entry.Name)
         {
-            Path = entry.Paths[0];
-            Name = entry.Name;
+            Path = entry.Path;
+            Directory = entry.Directory;
         }
 
         public string Path
@@ -27,15 +32,15 @@ namespace RemoteAppLauncher.Presentation.Items
             }
         }
 
-        public string Name
+        public string Directory
         {
-            get { return _name; }
+            get { return _directory; }
             set
             {
-                if (_name == value) return;
+                if(_directory == value) return;
 
-                _name = value;
-                NotifyOfPropertyChange(() => Name);
+                _directory = value;
+                NotifyOfPropertyChange(() => Directory);
             }
         }
 

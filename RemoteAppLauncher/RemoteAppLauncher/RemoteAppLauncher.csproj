@@ -86,7 +86,12 @@
     <Compile Include="Infrastructure\PathUtility.cs" />
     <Compile Include="Infrastructure\ProcessUtility.cs" />
     <Compile Include="Presentation\Items\DirectoryItemViewModel.cs" />
-    <Compile Include="Presentation\Items\DisplayEntryViewModel.cs" />
+    <Compile Include="Presentation\Items\DirectoryItemView.xaml.cs">
+      <DependentUpon>DirectoryItemView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Presentation\Items\FileItemView.xaml.cs">
+      <DependentUpon>FileItemView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Presentation\Items\FileItemViewModel.cs" />
     <Compile Include="Presentation\Items\LargeIconEntryView.xaml.cs">
       <DependentUpon>LargeIconEntryView.xaml</DependentUpon>
@@ -94,13 +99,11 @@
     <Compile Include="Presentation\Items\SmallIconEntryView.xaml.cs">
       <DependentUpon>SmallIconEntryView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Presentation\Items\TreeViewItemViewModel.cs" />
     <Compile Include="Data\Models\DirectoryEntry.cs" />
-    <Compile Include="Presentation\Screens\BrowserView.xaml.cs">
-      <DependentUpon>BrowserView.xaml</DependentUpon>
+    <Compile Include="Presentation\Screens\AllApplicationsView.xaml.cs">
+      <DependentUpon>AllApplicationsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Presentation\Screens\BrowserViewModel.cs" />
-    <Compile Include="Presentation\Screens\ObservableCollection.cs" />
+    <Compile Include="Presentation\Screens\AllApplicationsViewModel.cs" />
     <Compile Include="Presentation\Screens\SearchResultsView.xaml.cs">
       <DependentUpon>SearchResultsView.xaml</DependentUpon>
     </Compile>
@@ -118,6 +121,14 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="AppBootstrapper.cs" />
+    <Page Include="Presentation\Items\DirectoryItemView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Presentation\Items\FileItemView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Presentation\Items\LargeIconEntryView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -126,13 +137,13 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Presentation\Screens\AllApplicationsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Resources\Icons.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Presentation\Screens\BrowserView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Presentation\Screens\SearchResultsView.xaml">
       <SubType>Designer</SubType>
