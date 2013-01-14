@@ -134,5 +134,8 @@
                 </Button.Content>
             </Button>
         </DockPanel>
+        <Border Background="Tomato">
+            
+        </Border>
     </Grid>
 </controls:MetroWindow>

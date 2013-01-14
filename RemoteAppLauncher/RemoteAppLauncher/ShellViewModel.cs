@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using RemoteAppLauncher.Presentation.Screens;
+using RemoteAppLauncher.Infrastructure.Services;
 
 namespace RemoteAppLauncher
 {
@@ -14,10 +15,13 @@ namespace RemoteAppLauncher
         private string _filterString;
         private readonly UsageBasedViewModel _usageBasedViewModel;
         private readonly BrowserViewModel _browserViewModel;
+        private readonly PersistedItemService _fileService;
         private bool _allAppsVisible;
+        private bool _initializing;
 
         public ShellViewModel()
         {
+            _fileService = new PersistedItemService();
             _usageBasedViewModel = new UsageBasedViewModel();
             _browserViewModel = new BrowserViewModel();
 
@@ -49,6 +53,15 @@ namespace RemoteAppLauncher
             set { _allAppsVisible = value; NotifyOfPropertyChange(() => AllAppsVisible); }
         }
 
+        public bool Initializing
+        {
+            get { return _initializing; }
+            set { 
+                _initializing = value;
+                NotifyOfPropertyChange(() => Initializing);
+            }
+        }
+
         public void OpenControlPanel()
         {
             ProcessUtility.OpenControlPanel();
@@ -74,6 +87,14 @@ namespace RemoteAppLauncher
         internal void Reset()
         {
             HideAllApplications();
+        }
+
+        protected override void OnInitialize()
+        {
+            base.OnInitialize();
+
+            Initializing = true;
+            _fileService.UpdateStoredItems(() => { Initializing = false; });
         }
     }
 }

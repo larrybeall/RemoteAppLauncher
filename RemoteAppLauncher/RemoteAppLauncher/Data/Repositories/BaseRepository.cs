@@ -1,49 +1,41 @@
-﻿using DapperExtensions;
+﻿using System.IO;
+using Dapper;
+using DapperExtensions;
 using System;
 using System.Collections.Generic;
-using System.Data.SQLite;
+using System.Data.SqlServerCe;
 
 namespace RemoteAppLauncher.Data.Repositories
 {
     internal abstract class BaseRepository<TEntity>
         where TEntity : class, new()
     {
-        protected virtual string GetConnectionString()
+        public SqlCeConnection GetConnection()
         {
-            // intentionally left invalid to require derived class to implement.
-            return null;
+            return new SqlCeConnection(DataConfigManager.Instance.ConnectionString);
         }
 
-        public SQLiteConnection GetConnection()
-        {
-            string cnString = GetConnectionString();
-            if(string.IsNullOrEmpty(cnString))
-                throw new InvalidOperationException("GetConnectionString is not implemented or did not return your connection string.");
-
-            return new SQLiteConnection(cnString);
-        }
-
-        public TEntity Get(string id, SQLiteConnection connection = null)
+        public TEntity Get(string id, SqlCeConnection connection = null)
         {
             return Execute(cn => cn.Get<TEntity>(id), connection);
         }
 
-        public IEnumerable<TEntity> GetAll(SQLiteConnection connection = null)
+        public IEnumerable<TEntity> GetAll(SqlCeConnection connection = null)
         {
             return Execute(cn => cn.GetList<TEntity>(), connection);
         }
 
-        public void Insert(TEntity item, SQLiteConnection connection = null)
+        public void Insert(TEntity item, SqlCeConnection connection = null)
         {
             Execute(cn => cn.Insert(item), connection);
         }
 
-        public void Insert(IEnumerable<TEntity> item, SQLiteConnection connection = null)
+        public void Insert(IEnumerable<TEntity> item, SqlCeConnection connection = null)
         {
             Execute(cn => cn.Insert(item), connection);
         }
 
-        public void Remove(string id, SQLiteConnection connection = null)
+        public void Remove(string id, SqlCeConnection connection = null)
         {
             Execute(cn =>
             {
@@ -51,16 +43,32 @@ namespace RemoteAppLauncher.Data.Repositories
                 if (entity == null)
                     return;
 
-                cn.Delete(entity);
+                Remove(entity, cn);
             }, connection);
         }
 
-        public void Update(TEntity item)
+        public void Remove(TEntity entity, SqlCeConnection connection = null)
         {
-
+            Execute(cn => cn.Delete(entity), connection);
         }
 
-        protected void Execute(Action<SQLiteConnection> toExecute, SQLiteConnection connection = null)
+        public void Remove(IEnumerable<TEntity> entities, SqlCeConnection connection = null)
+        {
+            Execute(cn =>
+                {
+                    foreach (var entity in entities)
+                    {
+                        cn.Delete(entity);
+                    }
+                }, connection);
+        }
+
+        public void Update(TEntity item, SqlCeConnection connection = null)
+        {
+            Execute(cn => cn.Update<TEntity>(item), connection);
+        }
+
+        protected void Execute(Action<SqlCeConnection> toExecute, SqlCeConnection connection = null)
         {
             Execute<Object>(cn =>
             {
@@ -69,10 +77,10 @@ namespace RemoteAppLauncher.Data.Repositories
             }, connection);
         }
 
-        protected TReturn Execute<TReturn>(Func<SQLiteConnection, TReturn> toExecute, SQLiteConnection connection = null)
+        protected TReturn Execute<TReturn>(Func<SqlCeConnection, TReturn> toExecute, SqlCeConnection connection = null)
         {
             bool shouldManageConnection = connection == null;
-            SQLiteConnection cn = null;
+            SqlCeConnection cn = connection;
             TReturn result;
 
             try
