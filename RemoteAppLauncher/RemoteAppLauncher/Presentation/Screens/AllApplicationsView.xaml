@@ -5,21 +5,21 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:items="clr-namespace:RemoteAppLauncher.Presentation.Items"
              Background="Transparent"
+             HorizontalAlignment="Stretch"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-<ListView 
+<ListBox 
     x:Name="Applications"
-    Background="Transparent">
-    <ListView.ItemsPanel>
+    Background="Transparent"
+    HorizontalAlignment="Stretch"
+    ScrollViewer.VerticalScrollBarVisibility="Disabled">
+        <ListBox.ItemsPanel>
         <ItemsPanelTemplate>
             <WrapPanel 
                 Orientation="Vertical" 
                 ItemWidth="300" 
-                ItemHeight="60"
-                ScrollViewer.HorizontalScrollBarVisibility="Visible" 
-                ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                ScrollViewer.CanContentScroll="True"></WrapPanel>
+                ItemHeight="60"></WrapPanel>
         </ItemsPanelTemplate>
-    </ListView.ItemsPanel>
-</ListView>
+    </ListBox.ItemsPanel>
+</ListBox>
 </UserControl>
