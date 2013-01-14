@@ -8,7 +8,9 @@
              HorizontalAlignment="Stretch"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-<ListBox 
+    <UserControl.Resources>
+    </UserControl.Resources>
+<ListBox
     x:Name="Applications"
     Background="Transparent"
     HorizontalAlignment="Stretch"

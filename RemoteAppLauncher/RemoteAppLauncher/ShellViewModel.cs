@@ -75,6 +75,7 @@ namespace RemoteAppLauncher
         public void ShowAllApplications()
         {
             AllAppsVisible = true;
+            App.Current.MainWindow.Width = 700;
             ChangeActiveItem(_allApplicationsViewModel, false);
         }
 
