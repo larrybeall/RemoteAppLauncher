@@ -3,8 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             Width="200">
-<Border BorderThickness="0 0 0 2" BorderBrush="CornflowerBlue">
-    <TextBlock x:Name="Name" />
+             Width="200"
+             Height="50">
+    <UserControl.Resources>
+        <SolidColorBrush Color="{DynamicResource Gray3}" x:Key="UnderlineColor"/>
+    </UserControl.Resources>
+<Border BorderThickness="0 0 0 2" BorderBrush="{StaticResource UnderlineColor}" Margin="7 0 7 0">
+    <TextBlock x:Name="Name" Margin="0 0 0 5" FontSize="16" Foreground="CornflowerBlue" VerticalAlignment="Bottom" />
 </Border>
 </UserControl>

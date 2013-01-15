@@ -80,7 +80,7 @@ namespace RemoteAppLauncher.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to CREATE TABLE [PersistedFileItem] (
-        ///  [Id] nvarchar(455) NOT NULL
+        ///  [Id] nvarchar(32) NOT NULL
         ///, [Name] nvarchar(100) NOT NULL
         ///, [Path] nvarchar(455) NOT NULL
         ///, [Directory] ntext NOT NULL

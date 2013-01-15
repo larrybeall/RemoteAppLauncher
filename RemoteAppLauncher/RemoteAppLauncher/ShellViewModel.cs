@@ -15,13 +15,15 @@ namespace RemoteAppLauncher
         private string _filterString;
         private readonly UsageBasedViewModel _usageBasedViewModel;
         private readonly AllApplicationsViewModel _allApplicationsViewModel;
-        private readonly PersistedItemService _fileService;
+        private readonly ApplicationService _fileService;
+        private double _originalWindowWidth;
         private bool _allAppsVisible;
         private bool _initializing;
 
         public ShellViewModel()
         {
-            _fileService = new PersistedItemService();
+            _fileService = ApplicationService.Instance;
+            _fileService.InitializationComplete += (sender, args) => { Initializing = false; };
             _usageBasedViewModel = new UsageBasedViewModel();
             _allApplicationsViewModel = new AllApplicationsViewModel();
 
@@ -75,6 +77,7 @@ namespace RemoteAppLauncher
         public void ShowAllApplications()
         {
             AllAppsVisible = true;
+            _originalWindowWidth = App.Current.MainWindow.Width;
             App.Current.MainWindow.Width = 700;
             ChangeActiveItem(_allApplicationsViewModel, false);
         }
@@ -82,6 +85,7 @@ namespace RemoteAppLauncher
         public void HideAllApplications()
         {
             AllAppsVisible = false;
+            App.Current.MainWindow.Width = _originalWindowWidth;
             ChangeActiveItem(_usageBasedViewModel, false);
         }
 
@@ -95,7 +99,6 @@ namespace RemoteAppLauncher
             base.OnInitialize();
 
             Initializing = true;
-            _fileService.UpdateStoredItems(() => { Initializing = false; });
         }
     }
 }

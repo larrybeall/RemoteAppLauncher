@@ -77,9 +77,11 @@
     <Compile Include="Data\Models\PersistedFileItem.cs" />
     <Compile Include="Data\Repositories\BaseRepository.cs" />
     <Compile Include="Data\Repositories\PersistedItemRepository.cs" />
-    <Compile Include="Infrastructure\Services\PersistedItemService.cs" />
+    <Compile Include="Infrastructure\Services\ApplicationService.cs" />
+    <Compile Include="Infrastructure\HashUtility.cs" />
     <Compile Include="Presentation\Converters\DirectoryToImageSourceConverter.cs" />
     <Compile Include="Presentation\Converters\NotEqualNullConverter.cs" />
+    <Compile Include="Presentation\Converters\ObjectToTypeConverter.cs" />
     <Compile Include="Presentation\Converters\PathToImageSourceConverter.cs" />
     <Compile Include="Presentation\Converters\TreeViewItemToImageSourceConverter.cs" />
     <Compile Include="Infrastructure\IconUtility.cs" />
@@ -104,14 +106,11 @@
       <DependentUpon>AllApplicationsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Presentation\Screens\AllApplicationsViewModel.cs" />
-    <Compile Include="Presentation\Screens\SearchResultsView.xaml.cs">
-      <DependentUpon>SearchResultsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Presentation\Screens\SearchResultsViewModel.cs" />
     <Compile Include="Presentation\Screens\UsageBasedView.xaml.cs">
       <DependentUpon>UsageBasedView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Presentation\Screens\UsageBasedViewModel.cs" />
+    <Compile Include="Presentation\VirtualizingWrapPanel.cs" />
     <Compile Include="ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
     </Compile>
@@ -145,11 +144,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Presentation\Screens\SearchResultsView.xaml">
+    <Page Include="Presentation\Screens\UsageBasedView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Presentation\Screens\UsageBasedView.xaml">
+    <Page Include="Resources\ListBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\ScrollBars.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

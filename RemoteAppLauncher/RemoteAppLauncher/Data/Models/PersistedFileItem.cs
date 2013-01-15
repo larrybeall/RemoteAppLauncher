@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RemoteAppLauncher.Infrastructure;
+using System;
 
 namespace RemoteAppLauncher.Data.Models
 {
@@ -20,8 +21,8 @@ namespace RemoteAppLauncher.Data.Models
         {
             get
             {
-                if (string.IsNullOrEmpty(_id))
-                    _id = Path;
+                if (string.IsNullOrEmpty(_id) && !string.IsNullOrEmpty(Path))
+                    _id = HashUtility.Md5FromString(Path + Name + Directory);
 
                 return _id;
             }
@@ -39,14 +40,12 @@ namespace RemoteAppLauncher.Data.Models
             if (toCompare == null)
                 return false;
 
-            return toCompare.Name.Equals(Name, StringComparison.InvariantCultureIgnoreCase)
-                   && toCompare.Path.Equals(Path, StringComparison.InvariantCultureIgnoreCase)
-                   && toCompare.Directory.Equals(Directory, StringComparison.InvariantCultureIgnoreCase);
+            return toCompare.Id.Equals(Id, StringComparison.InvariantCultureIgnoreCase);
         }
 
         public override int GetHashCode()
         {
-            return Name.GetHashCode()*17 + Path.GetHashCode()*17 + Directory.GetHashCode()*17;
+            return Id.GetHashCode();
         }
     }
 }

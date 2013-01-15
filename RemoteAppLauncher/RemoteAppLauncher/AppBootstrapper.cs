@@ -1,5 +1,6 @@
 ﻿using Caliburn.Micro;
 using RemoteAppLauncher.Data;
+using RemoteAppLauncher.Infrastructure.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,7 @@ namespace RemoteAppLauncher
         {
             // init the config manager, which will init the database if it doesn't exist.
             var config = DataConfigManager.Instance;
+            ApplicationService.Instance.UpdateStoredItems(true);
 
             base.OnStartup(sender, e);
         }

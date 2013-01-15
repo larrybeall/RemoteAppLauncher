@@ -157,7 +157,7 @@ namespace RemoteAppLauncher.Infrastructure
         {
             Bitmap bitmap = icon.ToBitmap();
             IntPtr hBitmap = bitmap.GetHbitmap();
-
+            
             ImageSource wpfBitmap = Imaging.CreateBitmapSourceFromHBitmap(
                 hBitmap,
                 IntPtr.Zero,
@@ -168,6 +168,8 @@ namespace RemoteAppLauncher.Infrastructure
             {
                 throw new Win32Exception();
             }
+
+            wpfBitmap.Freeze();
 
             return wpfBitmap;
         }

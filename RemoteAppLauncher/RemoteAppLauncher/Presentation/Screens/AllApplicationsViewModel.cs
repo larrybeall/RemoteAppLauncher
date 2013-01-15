@@ -7,58 +7,60 @@ using System.Text;
 using System.Threading.Tasks;
 using RemoteAppLauncher.Infrastructure.Services;
 using RemoteAppLauncher.Presentation.Items;
+using System.Windows.Controls;
+using System.Windows.Threading;
 
 namespace RemoteAppLauncher.Presentation.Screens
 {
     public class AllApplicationsViewModel : Screen
     {
-        private readonly PersistedItemService _fileService;
-        private BindableCollection<ViewAware> _applications;
+        private readonly ApplicationService _applicationService;
+        private List<ViewAware> _applications = new List<ViewAware>();
 
         public AllApplicationsViewModel()
         {
-            _fileService = new PersistedItemService();
+            _applicationService = ApplicationService.Instance;
+            _applicationService.ApplicationsChanged += ApplicationServiceOnApplicationsChanged;
         }
 
-        public BindableCollection<ViewAware> Applications
+        public List<ViewAware> Applications
         {
             get { return _applications; }
         }
 
-        protected override void OnActivate()
+        private void ApplicationServiceOnApplicationsChanged(object sender, EventArgs eventArgs)
         {
-            if (_applications == null || _applications.Count <= 0)
+            var applications =
+                _applicationService.Applications
+                                   .OrderBy(x => x.Directory)
+                                   .ThenBy(x => x.Name)
+                                   .GroupBy(x => x.Directory)
+                                   .ToList();
+
+            List<ViewAware> newApplicationList = new List<ViewAware>();
+            foreach (var applicationGroup in applications)
             {
-                _fileService.GetAllItems((items) =>
-                    {
-                        List<ViewAware> data = new List<ViewAware>();
-                        var files = items.Select(x => new FileItemViewModel(x));
-
-                        var groups = files.OrderBy(x => x.Directory).GroupBy(x => x.Directory).ToList();
-
-                        foreach (var fileGroup in groups)
-                        {
-                            if(fileGroup.Key.Equals("programs", StringComparison.InvariantCultureIgnoreCase))
-                                continue;
-
-                            data.Add(new DirectoryItemViewModel(fileGroup.Key));
-                            data.AddRange(fileGroup);
-                        }
-
-                        var programs =
-                            groups.SingleOrDefault(x => x.Key.Equals("programs", StringComparison.InvariantCultureIgnoreCase));
-                        
-                        if (programs != null)
-                        {
-                            data.InsertRange(0, programs);
-                        }
-
-                        _applications = new BindableCollection<ViewAware>(data);
-                        NotifyOfPropertyChange(() => Applications);
-                    });
+                newApplicationList.Add(new DirectoryItemViewModel(applicationGroup.Key));
+                newApplicationList.AddRange(applicationGroup);
             }
 
-            base.OnActivate();
+            _applications = newApplicationList;
+            NotifyOfPropertyChange(() => Applications);
+        }
+
+        public void FileSelected(ListBox source)
+        {
+            if(source == null)
+                return;
+
+            var item = source.SelectedItem as FileItemViewModel;
+            if(item == null)
+                return;
+
+            item.Execute();
+            source.SelectedItem = null;
+
+            Dispatcher.CurrentDispatcher.Invoke(() => ((ShellViewModel)Parent).Reset());
         }
     }
 }
