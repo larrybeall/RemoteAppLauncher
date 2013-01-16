@@ -36,8 +36,7 @@
     Background="Transparent"
     HorizontalAlignment="Stretch"
     ScrollViewer.VerticalScrollBarVisibility="Disabled"
-    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-    cal:Message.Attach="[Event SelectionChanged] = [Action FileSelected($source)]">
+    ScrollViewer.HorizontalScrollBarVisibility="Disabled">
         <ListBox.ItemsPanel>
             <ItemsPanelTemplate>
                 <WrapPanel Orientation="Horizontal"/>

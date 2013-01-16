@@ -1,6 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using System.Windows;
 using System.Windows.Threading;
+using Caliburn.Micro;
 using RemoteAppLauncher.Data.Models;
 using RemoteAppLauncher.Data.Repositories;
 using System.Threading;
@@ -9,6 +10,7 @@ using System.Linq;
 using System;
 using System.Collections.Generic;
 using RemoteAppLauncher.Presentation.Items;
+using RemoteAppLauncher.Infrastructure.Events;
 
 namespace RemoteAppLauncher.Infrastructure.Services
 {
@@ -17,6 +19,7 @@ namespace RemoteAppLauncher.Infrastructure.Services
         private static readonly object SyncRoot = new object();
         private readonly PersistedItemRepository _repository;
         private readonly SynchronizationContext _uiContext;
+        private readonly IEventAggregator _events;
 
         private static volatile ApplicationService _instance;
         private static ConcurrentDictionary<string, FileItemViewModel> _applications = new ConcurrentDictionary<string, FileItemViewModel>();
@@ -25,10 +28,8 @@ namespace RemoteAppLauncher.Infrastructure.Services
         {
             _repository = new PersistedItemRepository();
             _uiContext = SynchronizationContext.Current;
+            _events = EventService.Instance;
         }
-
-        public event EventHandler InitializationComplete;
-        public event EventHandler ApplicationsChanged;
 
         public static ApplicationService Instance
         {
@@ -117,16 +118,19 @@ namespace RemoteAppLauncher.Infrastructure.Services
         public void ExecuteApplication(FileItemViewModel file)
         {
             ProcessUtility.ExecuteProcess(file.Path);
+            _events.Publish(ApplicationExecutedEvent.Default);
+
+            UpdateFromViewModel(file);
         }
 
-        public void PinApp(FileItemViewModel file)
+        public void PinApp(FileItemViewModel fileVm)
         {
-            MessageBox.Show("Pin App");
+            UpdateFromViewModel(fileVm);
         }
 
-        public void SetIconPath(FileItemViewModel file)
+        public void SetIconPath(FileItemViewModel fileVm)
         {
-            MessageBox.Show("Set Icon Path");
+            UpdateFromViewModel(fileVm);
         }
 
         private void NotifyNewItems(bool initializing)
@@ -139,16 +143,21 @@ namespace RemoteAppLauncher.Infrastructure.Services
 
         private void RaiseInitializationComplete()
         {
-            var handler = InitializationComplete;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            _events.Publish(InitializationCompleteEvent.Default);
         }
 
         private void RaiseApplicationsChanged()
         {
-            var handler = ApplicationsChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            _events.Publish(ApplicationsChangedEvent.Default);
+        }
+
+        private void UpdateFromViewModel(FileItemViewModel fileVm)
+        {
+            Task.Factory.StartNew(() =>
+            {
+                var persistedFile = new PersistedFileItem(fileVm);
+                _repository.Update(persistedFile);
+            });
         }
     }
 }

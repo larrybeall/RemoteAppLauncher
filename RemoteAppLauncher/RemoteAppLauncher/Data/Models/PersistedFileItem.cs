@@ -1,4 +1,5 @@
 ﻿using RemoteAppLauncher.Infrastructure;
+using RemoteAppLauncher.Presentation.Items;
 using System;
 
 namespace RemoteAppLauncher.Data.Models
@@ -7,6 +8,16 @@ namespace RemoteAppLauncher.Data.Models
     {
         public PersistedFileItem()
         {}
+
+        public PersistedFileItem(FileItemViewModel vm)
+        {
+            Id = vm.Id;
+            Name = vm.Name;
+            Path = vm.Path;
+            Directory = vm.Directory;
+            Pinned = vm.Pinned;
+            Accesses = vm.Accesses;
+        }
 
         public PersistedFileItem(DirectoryEntry entry)
         {

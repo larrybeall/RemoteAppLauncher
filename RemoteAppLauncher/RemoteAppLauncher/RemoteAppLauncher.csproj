@@ -94,8 +94,12 @@
     <Compile Include="Data\Models\PersistedFileItem.cs" />
     <Compile Include="Data\Repositories\BaseRepository.cs" />
     <Compile Include="Data\Repositories\PersistedItemRepository.cs" />
+    <Compile Include="Infrastructure\Events\ApplicationExecutedEvent.cs" />
+    <Compile Include="Infrastructure\Events\ApplicationsChangedEvent.cs" />
+    <Compile Include="Infrastructure\Events\InitializationCompleteEvent.cs" />
     <Compile Include="Infrastructure\Services\ApplicationService.cs" />
     <Compile Include="Infrastructure\HashUtility.cs" />
+    <Compile Include="Infrastructure\Services\EventService.cs" />
     <Compile Include="Presentation\AutoRefreshCollectionViewSource.cs" />
     <Compile Include="Presentation\Converters\DebugConverter.cs" />
     <Compile Include="Presentation\Converters\DirectoryToImageSourceConverter.cs" />

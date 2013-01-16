@@ -8,21 +8,25 @@ using Caliburn.Micro;
 using RemoteAppLauncher.Presentation.Items;
 using RemoteAppLauncher.Infrastructure.Services;
 using System.Windows.Data;
+using RemoteAppLauncher.Infrastructure.Events;
 
 namespace RemoteAppLauncher.Presentation.Screens
 {
-    public class UsageBasedViewModel : Screen
+    public class UsageBasedViewModel : Screen, IHandle<ApplicationsChangedEvent>
     {
         private readonly ApplicationService _applicationService;
+        private readonly IEventAggregator _events;
 
         private ObservableCollection<FileItemViewModel> _applications;
         private string _searchFilter;
 
         public UsageBasedViewModel()
         {
+            _events = EventService.Instance;
             _applications = new ObservableCollection<FileItemViewModel>();
             _applicationService = ApplicationService.Instance;
-            _applicationService.ApplicationsChanged += ApplicationServiceOnApplicationsChanged;
+
+            _events.Subscribe(this);
         }
 
         public string SearchFilter
@@ -42,12 +46,6 @@ namespace RemoteAppLauncher.Presentation.Screens
             get { return _applications; }
         }
 
-        private void ApplicationServiceOnApplicationsChanged(object sender, EventArgs eventArgs)
-        {
-            _applications = new ObservableCollection<FileItemViewModel>(_applicationService.Applications);
-            NotifyOfPropertyChange(() => Applications);
-        }
-
         public void FileSelected(ListBox source)
         {
             if (source == null)
@@ -64,6 +62,12 @@ namespace RemoteAppLauncher.Presentation.Screens
         public void FilterApplications(FilterEventArgs args)
         {
             
+        }
+
+        public void Handle(ApplicationsChangedEvent message)
+        {
+            _applications = new ObservableCollection<FileItemViewModel>(_applicationService.Applications);
+            NotifyOfPropertyChange(() => Applications);
         }
     }
 }

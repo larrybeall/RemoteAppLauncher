@@ -7,26 +7,30 @@ using System.Text;
 using System.Threading.Tasks;
 using RemoteAppLauncher.Presentation.Screens;
 using RemoteAppLauncher.Infrastructure.Services;
+using RemoteAppLauncher.Infrastructure.Events;
 
 namespace RemoteAppLauncher
 {
-    public class ShellViewModel : Conductor<IScreen>.Collection.OneActive
+    public class ShellViewModel : Conductor<IScreen>.Collection.OneActive, IHandle<InitializationCompleteEvent>, IHandle<ApplicationExecutedEvent>
     {
-        private string _filterString;
         private readonly UsageBasedViewModel _usageBasedViewModel;
         private readonly AllApplicationsViewModel _allApplicationsViewModel;
         private readonly ApplicationService _fileService;
+        private readonly IEventAggregator _events;
+
+        private string _filterString;
         private double _originalWindowWidth;
         private bool _allAppsVisible;
         private bool _initializing;
 
         public ShellViewModel()
         {
+            _events = EventService.Instance;
             _fileService = ApplicationService.Instance;
-            _fileService.InitializationComplete += (sender, args) => { Initializing = false; };
             _usageBasedViewModel = new UsageBasedViewModel();
             _allApplicationsViewModel = new AllApplicationsViewModel();
 
+            _events.Subscribe(this);
             ActivateItem(_usageBasedViewModel);
         }
 
@@ -87,6 +91,19 @@ namespace RemoteAppLauncher
             AllAppsVisible = false;
             App.Current.MainWindow.Width = _originalWindowWidth;
             ChangeActiveItem(_usageBasedViewModel, false);
+        }
+
+        public void Handle(InitializationCompleteEvent message)
+        {
+            Initializing = false;
+        }
+
+        public void Handle(ApplicationExecutedEvent message)
+        {
+            if(!AllAppsVisible)
+                return;
+
+            HideAllApplications();
         }
 
         internal void Reset()

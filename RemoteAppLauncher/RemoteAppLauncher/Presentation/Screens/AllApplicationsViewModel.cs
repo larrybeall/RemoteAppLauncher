@@ -9,18 +9,21 @@ using RemoteAppLauncher.Infrastructure.Services;
 using RemoteAppLauncher.Presentation.Items;
 using System.Windows.Controls;
 using System.Windows.Threading;
+using RemoteAppLauncher.Infrastructure.Events;
 
 namespace RemoteAppLauncher.Presentation.Screens
 {
-    public class AllApplicationsViewModel : Screen
+    public class AllApplicationsViewModel : Screen, IHandle<ApplicationsChangedEvent>
     {
+        private readonly IEventAggregator _events;
         private readonly ApplicationService _applicationService;
         private List<ViewAware> _applications = new List<ViewAware>();
 
         public AllApplicationsViewModel()
         {
             _applicationService = ApplicationService.Instance;
-            _applicationService.ApplicationsChanged += ApplicationServiceOnApplicationsChanged;
+            _events = EventService.Instance;
+            _events.Subscribe(this);
         }
 
         public List<ViewAware> Applications
@@ -28,7 +31,22 @@ namespace RemoteAppLauncher.Presentation.Screens
             get { return _applications; }
         }
 
-        private void ApplicationServiceOnApplicationsChanged(object sender, EventArgs eventArgs)
+        public void FileSelected(ListBox source)
+        {
+            if (source == null)
+                return;
+
+            var item = source.SelectedItem as FileItemViewModel;
+            if (item == null)
+                return;
+
+            item.Execute();
+            source.SelectedItem = null;
+
+            Dispatcher.CurrentDispatcher.Invoke(() => ((ShellViewModel)Parent).Reset());
+        }
+
+        public void Handle(ApplicationsChangedEvent message)
         {
             var applications =
                 _applicationService.Applications
@@ -46,21 +64,6 @@ namespace RemoteAppLauncher.Presentation.Screens
 
             _applications = newApplicationList;
             NotifyOfPropertyChange(() => Applications);
-        }
-
-        public void FileSelected(ListBox source)
-        {
-            if(source == null)
-                return;
-
-            var item = source.SelectedItem as FileItemViewModel;
-            if(item == null)
-                return;
-
-            item.Execute();
-            source.SelectedItem = null;
-
-            Dispatcher.CurrentDispatcher.Invoke(() => ((ShellViewModel)Parent).Reset());
         }
     }
 }
