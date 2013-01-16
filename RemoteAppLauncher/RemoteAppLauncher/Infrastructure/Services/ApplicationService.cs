@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using System.Windows;
 using System.Windows.Threading;
 using RemoteAppLauncher.Data.Models;
 using RemoteAppLauncher.Data.Repositories;
@@ -111,6 +112,21 @@ namespace RemoteAppLauncher.Infrastructure.Services
                 });
 
             updateTask.Start();
+        }
+
+        public void ExecuteApplication(FileItemViewModel file)
+        {
+            ProcessUtility.ExecuteProcess(file.Path);
+        }
+
+        public void PinApp(FileItemViewModel file)
+        {
+            MessageBox.Show("Pin App");
+        }
+
+        public void SetIconPath(FileItemViewModel file)
+        {
+            MessageBox.Show("Set Icon Path");
         }
 
         private void NotifyNewItems(bool initializing)

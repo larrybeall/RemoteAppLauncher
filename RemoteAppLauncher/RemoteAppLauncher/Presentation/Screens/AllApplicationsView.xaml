@@ -24,8 +24,7 @@
     SelectionMode="Single"
     Background="Transparent"
     HorizontalAlignment="Stretch"
-    ScrollViewer.VerticalScrollBarVisibility="Disabled"
-    cal:Message.Attach="[Event SelectionChanged] = [Action FileSelected($source)]">
+    ScrollViewer.VerticalScrollBarVisibility="Disabled">
     <ListBox.ItemsPanel>
         <ItemsPanelTemplate>
             <pres:VirtualizingWrapPanel

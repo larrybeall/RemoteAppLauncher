@@ -12,6 +12,8 @@ namespace RemoteAppLauncher.Infrastructure
 {
     internal static class PathUtility
     {
+        private static string[] AllowedExtensions = new string[3] { ".exe", ".lnk", ".appref-ms" };
+
         public static bool IsPathDirectory(string path)
         {
             if(string.IsNullOrEmpty(path))
@@ -75,10 +77,9 @@ namespace RemoteAppLauncher.Infrastructure
                 foreach (var entry in entries)
                 {
                     var dirEntry = CreateEntry(entry, parentDirectory, IsPathDirectory(entry));
+                    string fileExtension = Path.GetExtension(dirEntry.Paths[0]);
                     if (dirEntry.Name.Equals("desktop", StringComparison.InvariantCultureIgnoreCase)
-                        || (dirEntry.IsDirectory == false
-                            && !dirEntry.Paths[0].EndsWith(".lnk", StringComparison.InvariantCultureIgnoreCase)
-                            && !dirEntry.Paths[0].EndsWith(".exe", StringComparison.InvariantCultureIgnoreCase)))
+                        || (dirEntry.IsDirectory == false && !AllowedExtensions.Any(x => x.Equals(fileExtension, StringComparison.InvariantCultureIgnoreCase))))
                         continue;
 
                     yield return dirEntry;

@@ -3,11 +3,15 @@ using RemoteAppLauncher.Data.Models;
 using Caliburn.Micro;
 using System.Windows.Media;
 using RemoteAppLauncher.Infrastructure;
+using System.Windows;
+using RemoteAppLauncher.Infrastructure.Services;
 
 namespace RemoteAppLauncher.Presentation.Items
 {
     public class FileItemViewModel : DirectoryItemViewModel
     {
+        private readonly ApplicationService _applicationService;
+
         private string _path;
         private string _directory;
         private string _id;
@@ -15,7 +19,8 @@ namespace RemoteAppLauncher.Presentation.Items
         private long _accesses;
 
         public FileItemViewModel()
-        {}
+        {
+        }
 
         public FileItemViewModel(PersistedFileItem entry)
             : base(entry.Name)
@@ -99,9 +104,20 @@ namespace RemoteAppLauncher.Presentation.Items
         public void Execute()
         {
             Accesses = Accesses + 1;
+
+            ApplicationService.Instance.ExecuteApplication(this);
+        }
+
+        public void PinApp()
+        {
             Pinned = true;
 
-            ProcessUtility.ExecuteProcess(Path);
+            ApplicationService.Instance.PinApp(this);
+        }
+
+        public void SetIconPath()
+        {
+            ApplicationService.Instance.SetIconPath(this);
         }
     }
 }

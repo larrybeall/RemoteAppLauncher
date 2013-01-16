@@ -27,7 +27,7 @@ namespace RemoteAppLauncher.Presentation.Screens
                 return;
 
             FileItemViewModel fileItem = (FileItemViewModel)e.Item;
-            if (!fileItem.Pinned || fileItem.Accesses == 0)
+            if (!fileItem.Pinned && fileItem.Accesses == 0)
             {
                 e.Accepted = false;
                 return;
