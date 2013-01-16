@@ -15,7 +15,17 @@ namespace RemoteAppLauncher.Infrastructure
             if(string.IsNullOrEmpty(executablePath))
                 throw new ArgumentNullException("executablePath");
 
-            Process.Start(executablePath);
+            try
+            {
+                var p = Process.Start(executablePath);
+            }
+            catch (System.ComponentModel.Win32Exception)
+            {
+                ProcessStartInfo psi = new ProcessStartInfo(executablePath);
+                psi.UseShellExecute = false;
+                Process.Start(psi);
+            }
+            
         }
 
         public static void OpenControlPanel()

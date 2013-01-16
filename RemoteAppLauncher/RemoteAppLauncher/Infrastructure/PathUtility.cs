@@ -4,7 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using IWshRuntimeLibrary;
 using RemoteAppLauncher.Data.Models;
+using File = System.IO.File;
 
 namespace RemoteAppLauncher.Infrastructure
 {
@@ -73,7 +75,10 @@ namespace RemoteAppLauncher.Infrastructure
                 foreach (var entry in entries)
                 {
                     var dirEntry = CreateEntry(entry, parentDirectory, IsPathDirectory(entry));
-                    if (dirEntry.Name.Equals("desktop", StringComparison.InvariantCultureIgnoreCase))
+                    if (dirEntry.Name.Equals("desktop", StringComparison.InvariantCultureIgnoreCase)
+                        || (dirEntry.IsDirectory == false
+                            && !dirEntry.Paths[0].EndsWith(".lnk", StringComparison.InvariantCultureIgnoreCase)
+                            && !dirEntry.Paths[0].EndsWith(".exe", StringComparison.InvariantCultureIgnoreCase)))
                         continue;
 
                     yield return dirEntry;
@@ -119,9 +124,7 @@ namespace RemoteAppLauncher.Infrastructure
 
         private static DirectoryEntry CreateEntry(string path, string parentDirectory, bool isDirectory)
         {
-            string name = (isDirectory)
-                              ? Path.GetFileName(path)
-                              : Path.GetFileNameWithoutExtension(path);
+            string name = isDirectory ? Path.GetFileName(parentDirectory) : Path.GetFileNameWithoutExtension(path);
 
             return new DirectoryEntry
                 {

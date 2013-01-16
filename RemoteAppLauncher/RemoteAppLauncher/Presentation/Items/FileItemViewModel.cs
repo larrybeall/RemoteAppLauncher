@@ -11,6 +11,8 @@ namespace RemoteAppLauncher.Presentation.Items
         private string _path;
         private string _directory;
         private string _id;
+        private bool _pinned;
+        private long _accesses;
 
         public FileItemViewModel()
         {}
@@ -20,6 +22,8 @@ namespace RemoteAppLauncher.Presentation.Items
         {
             Path = entry.Path;
             Directory = entry.Directory;
+            Pinned = entry.Pinned;
+            Accesses = entry.Accesses;
         }
 
         public string Id
@@ -66,9 +70,38 @@ namespace RemoteAppLauncher.Presentation.Items
             }
         }
 
+        public bool Pinned
+        {
+            get { return _pinned; }
+            set
+            {
+                if(_pinned == value)
+                    return;
+
+                _pinned = value;
+                NotifyOfPropertyChange(() => Pinned);
+            }
+        }
+
+        public long Accesses
+        {
+            get { return _accesses; }
+            set
+            {
+                if(_accesses == value)
+                    return;
+
+                _accesses = value;
+                NotifyOfPropertyChange(() => Accesses);
+            }
+        }
+
         public void Execute()
         {
-            Process p = Process.Start(Path);
+            Accesses = Accesses + 1;
+            Pinned = true;
+
+            ProcessUtility.ExecuteProcess(Path);
         }
     }
 }

@@ -16,9 +16,6 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Resources/ListBox.xaml" />
-                <ResourceDictionary>
-                    <converters:ObjectToTypeConverter x:Key="ObjectToTypeConverter"/>
-                </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>

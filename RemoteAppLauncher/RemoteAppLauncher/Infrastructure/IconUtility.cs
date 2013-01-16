@@ -97,8 +97,9 @@ namespace RemoteAppLauncher.Infrastructure
             [DllImport("shell32.dll")]
             public static extern IntPtr SHGetFileInfo(string pszPath, uint dwFileAttributes, ref SHFILEINFO psfi, uint cbSizeFileInfo, uint uFlags);
 
-            [DllImport("User32.dll")]
-            public static extern int DestroyIcon(IntPtr hIcon);
+            [DllImport("user32.dll", SetLastError = true)]
+            [return: MarshalAs(UnmanagedType.Bool)]
+            public static extern bool DestroyIcon(IntPtr hIcon); 
 
             [DllImport("comctl32.dll", SetLastError = true)]
             public static extern IntPtr ImageList_GetIcon(IntPtr himl, int i, int flags);
@@ -140,16 +141,31 @@ namespace RemoteAppLauncher.Infrastructure
         private static ImageSource GetIcon(string fileName, SHGFI flags, bool isFolder = false)
         {
             SHFILEINFO shinfo = new SHFILEINFO();
+            Icon icon = null;
+            ImageSource img = null;
 
-            IntPtr hImgSmall = Win32.SHGetFileInfo(fileName, isFolder ? FILE_ATTRIBUTE_DIRECTORY : FILE_ATTRIBUTE_NORMAL, ref shinfo, (uint)Marshal.SizeOf(shinfo), (uint)(SHGFI.SysIconIndex | flags));
-            IntPtr iconHandle = Win32.ImageList_GetIcon(hImgSmall, (int)shinfo.iIcon, 0);
-            Icon icon = (Icon)System.Drawing.Icon.FromHandle(iconHandle).Clone();
+            try
+            {
+                IntPtr hImgSmall = Win32.SHGetFileInfo(fileName,
+                                                       isFolder ? FILE_ATTRIBUTE_DIRECTORY : FILE_ATTRIBUTE_NORMAL,
+                                                       ref shinfo, (uint) Marshal.SizeOf(shinfo),
+                                                       (uint) (SHGFI.SysIconIndex | flags));
+                IntPtr iconHandle = Win32.ImageList_GetIcon(hImgSmall, (int) shinfo.iIcon, 0);
+                icon = (Icon) System.Drawing.Icon.FromHandle(iconHandle).Clone();
 
-            var img = GetImageSource(icon);
+                img = GetImageSource(icon);
+            }
+            catch (Exception)
+            {
+                img = GetIcon(".exe", flags | SHGFI.UseFileAttributes);
+            }
+            finally
+            {
+                Win32.DestroyIcon(shinfo.hIcon);
+                if(icon != null)
+                    icon.Dispose();
+            }
             
-            Win32.DestroyIcon(shinfo.hIcon);
-            icon.Dispose();
-
             return img;
         }
 
