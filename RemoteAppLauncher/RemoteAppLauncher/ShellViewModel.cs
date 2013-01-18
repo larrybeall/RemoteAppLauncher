@@ -11,27 +11,39 @@ using RemoteAppLauncher.Infrastructure.Events;
 
 namespace RemoteAppLauncher
 {
-    public class ShellViewModel : Conductor<IScreen>.Collection.OneActive, IHandle<InitializationCompleteEvent>, IHandle<ApplicationExecutedEvent>
+    public class ShellViewModel 
+            : Conductor<IScreen>.Collection.OneActive, 
+            IHandle<InitializationCompleteEvent>,
+            IHandle<LoadingEvent>
     {
-        private readonly UsageBasedViewModel _usageBasedViewModel;
-        private readonly AllApplicationsViewModel _allApplicationsViewModel;
-        private readonly ApplicationService _fileService;
+        private readonly ApplicationsViewModel _applicationsViewModel;
         private readonly IEventAggregator _events;
 
         private string _filterString;
         private double _originalWindowWidth;
         private bool _allAppsVisible;
         private bool _initializing;
+        private string _viewContext;
 
         public ShellViewModel()
         {
             _events = EventService.Instance;
-            _fileService = ApplicationService.Instance;
-            _usageBasedViewModel = new UsageBasedViewModel();
-            _allApplicationsViewModel = new AllApplicationsViewModel();
+            _applicationsViewModel = new ApplicationsViewModel();
 
             _events.Subscribe(this);
-            ActivateItem(_usageBasedViewModel);
+            ActivateItem(_applicationsViewModel);
+        }
+
+        public string ViewState
+        {
+            get { return _viewContext; }
+            set
+            {
+                if (_viewContext == value) return;
+
+                _viewContext = value;
+                NotifyOfPropertyChange(() => ViewState);
+            }
         }
 
         public override string DisplayName
@@ -68,47 +80,9 @@ namespace RemoteAppLauncher
             }
         }
 
-        public void OpenControlPanel()
-        {
-            ProcessUtility.OpenControlPanel();
-        }
-
-        public void OpenFileExplorer()
-        {
-            ProcessUtility.OpenFileExplorer();
-        }
-
-        public void ShowAllApplications()
-        {
-            AllAppsVisible = true;
-            _originalWindowWidth = App.Current.MainWindow.Width;
-            App.Current.MainWindow.Width = 700;
-            ChangeActiveItem(_allApplicationsViewModel, false);
-        }
-
-        public void HideAllApplications()
-        {
-            AllAppsVisible = false;
-            App.Current.MainWindow.Width = _originalWindowWidth;
-            ChangeActiveItem(_usageBasedViewModel, false);
-        }
-
         public void Handle(InitializationCompleteEvent message)
         {
             Initializing = false;
-        }
-
-        public void Handle(ApplicationExecutedEvent message)
-        {
-            if(!AllAppsVisible)
-                return;
-
-            HideAllApplications();
-        }
-
-        internal void Reset()
-        {
-            HideAllApplications();
         }
 
         protected override void OnInitialize()
@@ -116,6 +90,13 @@ namespace RemoteAppLauncher
             base.OnInitialize();
 
             Initializing = true;
+        }
+
+        public void Handle(LoadingEvent message)
+        {
+            if (message == null) return;
+
+            Initializing = message.Loading;
         }
     }
 }

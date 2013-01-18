@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace RemoteAppLauncher.Presentation.Items
+namespace RemoteAppLauncher.Presentation.Screens
 {
     /// <summary>
-    /// Interaction logic for DirectoryItemViewModel.xaml
+    /// Interaction logic for Applications.xaml
     /// </summary>
-    public partial class DirectoryItemView : UserControl
+    public partial class ApplicationsView : UserControl
     {
-        public DirectoryItemView()
+        public ApplicationsView()
         {
             InitializeComponent();
         }

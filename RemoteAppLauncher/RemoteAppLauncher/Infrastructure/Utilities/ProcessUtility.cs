@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace RemoteAppLauncher.Infrastructure
+namespace RemoteAppLauncher.Infrastructure.Utilities
 {
     internal static class ProcessUtility
     {
@@ -30,14 +25,12 @@ namespace RemoteAppLauncher.Infrastructure
 
         public static void OpenControlPanel()
         {
-            string systemPath = Environment.GetFolderPath(Environment.SpecialFolder.System);
-            ExecuteProcess(Path.Combine(systemPath, "control.exe"));
+            ExecuteProcess(PathUtility.ControlPanelPath);
         }
 
         public static void OpenFileExplorer()
         {
-            string systemPath = Environment.GetFolderPath(Environment.SpecialFolder.System);
-            ExecuteProcess(Path.Combine(systemPath, "explorer.exe"));
+            ExecuteProcess(PathUtility.FileExplorerPath);
         }
     }
 }

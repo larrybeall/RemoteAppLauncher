@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace RemoteAppLauncher.Presentation.Screens
+namespace RemoteAppLauncher.Presentation.Screens.Applications
 {
     /// <summary>
-    /// Interaction logic for AllApplicationsView.xaml
+    /// Interaction logic for All.xaml
     /// </summary>
-    public partial class AllApplicationsView : UserControl
+    public partial class All : UserControl
     {
-        public AllApplicationsView()
+        public All()
         {
             InitializeComponent();
         }

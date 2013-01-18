@@ -5,6 +5,7 @@ using System.Windows.Media;
 using RemoteAppLauncher.Infrastructure;
 using System.Windows;
 using RemoteAppLauncher.Infrastructure.Services;
+using RemoteAppLauncher.Infrastructure.Utilities;
 
 namespace RemoteAppLauncher.Presentation.Items
 {

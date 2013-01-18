@@ -3,7 +3,7 @@ using System.Text;
 using System.Security.Cryptography;
 using System.IO;
 
-namespace RemoteAppLauncher.Infrastructure
+namespace RemoteAppLauncher.Infrastructure.Utilities
 {
     internal static class HashUtility
     {
