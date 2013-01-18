@@ -1,6 +1,7 @@
 ﻿using RemoteAppLauncher.Infrastructure;
 using System;
 using System.Windows.Data;
+using RemoteAppLauncher.Infrastructure.Utilities;
 
 namespace RemoteAppLauncher.Presentation.Converters
 {

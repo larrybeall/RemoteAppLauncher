@@ -11,7 +11,7 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Resources/ListBox.xaml" />
+                <ResourceDictionary Source="/Presentation/Resources/ListBox.xaml" />
                 <ResourceDictionary Source="/Resources/Icons.xaml" />
                 <ResourceDictionary>
                     <SolidColorBrush x:Key="ImageBackground" Color="{DynamicResource Gray2}"/>

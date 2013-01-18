@@ -13,7 +13,7 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Resources/ListBox.xaml" />
+                <ResourceDictionary Source="/Presentation/Resources/ListBox.xaml" />
                 <ResourceDictionary Source="/Resources/Icons.xaml" />
                 <ResourceDictionary>
                     <SolidColorBrush x:Key="ImageBackground" Color="{DynamicResource Gray2}"/>
@@ -40,25 +40,20 @@
             Background="Transparent"
             HorizontalAlignment="Stretch"
             ScrollViewer.VerticalScrollBarVisibility="Disabled"
-            ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+            micro:Message.Attach="[Event SelectionChanged] = [Action FileSelected($source)]">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel Orientation="Horizontal"/>
                 </ItemsPanelTemplate>
             </ListBox.ItemsPanel>
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Border 
-                    Height="40" 
-                    Width="40" 
-                    Grid.Column="0" 
-                    Margin="4" 
-                    Background="{StaticResource ImageBackground}"
-                    ToolTip="{Binding Name}">
-                        <Image Margin="4" Height="32" Width="32" Source="{Binding ImageSource}"  />
-                    </Border>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
+            <ListBox.Resources>
+                <ResourceDictionary>
+                    <ResourceDictionary.MergedDictionaries>
+                        <ResourceDictionary Source="/Presentation/Items/BriefItemDataTemplates.xaml"/>
+                    </ResourceDictionary.MergedDictionaries>
+                </ResourceDictionary>
+            </ListBox.Resources>
         </ListBox>
         
 </UserControl>

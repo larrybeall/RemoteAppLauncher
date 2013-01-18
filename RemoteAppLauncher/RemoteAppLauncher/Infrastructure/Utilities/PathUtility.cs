@@ -2,13 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using IWshRuntimeLibrary;
 using RemoteAppLauncher.Data.Models;
 using File = System.IO.File;
 
-namespace RemoteAppLauncher.Infrastructure
+namespace RemoteAppLauncher.Infrastructure.Utilities
 {
     internal static class PathUtility
     {

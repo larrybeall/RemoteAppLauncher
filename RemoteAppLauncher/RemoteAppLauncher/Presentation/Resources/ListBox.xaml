@@ -8,7 +8,7 @@
         <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
         <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/VS/Colours.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/VS/Styles.xaml"/>
-        <ResourceDictionary Source="/Resources/ScrollBars.xaml" />
+        <ResourceDictionary Source="/Presentation/Resources/ScrollBars.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <converters:ObjectToTypeConverter x:Key="ObjectToTypeConverter"/>

@@ -13,13 +13,10 @@ namespace RemoteAppLauncher
 {
     public class ShellViewModel 
             : Conductor<IScreen>.Collection.OneActive, 
-            IHandle<InitializationCompleteEvent>, 
-            IHandle<ApplicationExecutedEvent>,
+            IHandle<InitializationCompleteEvent>,
             IHandle<LoadingEvent>
     {
-        private readonly UsageBasedViewModel _usageBasedViewModel;
         private readonly ApplicationsViewModel _applicationsViewModel;
-        private readonly ApplicationService _fileService;
         private readonly IEventAggregator _events;
 
         private string _filterString;
@@ -31,12 +28,9 @@ namespace RemoteAppLauncher
         public ShellViewModel()
         {
             _events = EventService.Instance;
-            _fileService = ApplicationService.Instance;
-            _usageBasedViewModel = new UsageBasedViewModel();
             _applicationsViewModel = new ApplicationsViewModel();
 
             _events.Subscribe(this);
-            //ViewState = "Pinned";
             ActivateItem(_applicationsViewModel);
         }
 
@@ -86,56 +80,9 @@ namespace RemoteAppLauncher
             }
         }
 
-        public void OpenControlPanel()
-        {
-            ProcessUtility.OpenControlPanel();
-        }
-
-        public void OpenFileExplorer()
-        {
-            ProcessUtility.OpenFileExplorer();
-        }
-
-        public void ShowAllApplications()
-        {
-            AllAppsVisible = true;
-            _originalWindowWidth = App.Current.MainWindow.Width;
-            App.Current.MainWindow.Width = 700;
-            ViewState = ApplicationsViewModel.AllViewState;
-        }
-
-        public void ShowPinnedApplications()
-        {
-            AllAppsVisible = true;
-            if (_originalWindowWidth > 0 && _originalWindowWidth < App.Current.MainWindow.Width)
-                App.Current.MainWindow.Width = _originalWindowWidth;
-
-            ViewState = ApplicationsViewModel.PinnedViewState;
-        }
-
-        public void HideAllApplications()
-        {
-            AllAppsVisible = false;
-            App.Current.MainWindow.Width = _originalWindowWidth;
-            ViewState = "Pinned";
-        }
-
         public void Handle(InitializationCompleteEvent message)
         {
             Initializing = false;
-        }
-
-        public void Handle(ApplicationExecutedEvent message)
-        {
-            if(!AllAppsVisible)
-                return;
-
-            ShowPinnedApplications();
-        }
-
-        internal void Reset()
-        {
-            ShowPinnedApplications();
         }
 
         protected override void OnInitialize()

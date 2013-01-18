@@ -1,19 +1,15 @@
-﻿using System.Collections.ObjectModel;
-using Caliburn.Micro;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Caliburn.Micro;
+using RemoteAppLauncher.Infrastructure.Events;
 using RemoteAppLauncher.Infrastructure.Services;
 using RemoteAppLauncher.Presentation.Items;
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Threading;
-using RemoteAppLauncher.Infrastructure.Events;
 
 namespace RemoteAppLauncher.Presentation.Screens
 {
-    public class ApplicationsViewModel : Screen, IHandle<ApplicationsChangedEvent>
+    public class ApplicationsViewModel : Screen, IHandle<ApplicationsChangedEvent>, IHandle<ApplicationExecutedEvent>
     {
         public static string PinnedViewState = "Pinned";
         public static string AllViewState = "All";
@@ -79,14 +75,7 @@ namespace RemoteAppLauncher.Presentation.Screens
             if (source == null)
                 return;
 
-            var item = source.SelectedItem as FileItemViewModel;
-            if (item == null)
-                return;
-
-            item.Execute();
             source.SelectedItem = null;
-
-            Dispatcher.CurrentDispatcher.Invoke(() => ((ShellViewModel)Parent).Reset());
         }
 
         public void Handle(ApplicationsChangedEvent message)
@@ -112,18 +101,26 @@ namespace RemoteAppLauncher.Presentation.Screens
         public void ShowAllApplications()
         {
             AllAppsVisible = true;
-            ViewState = ApplicationsViewModel.AllViewState;
-            _originalWindowWidth = App.Current.MainWindow.Width;
-            App.Current.MainWindow.Width = 700;
+            ViewState = AllViewState;
+            _originalWindowWidth = Application.Current.MainWindow.Width;
+            Application.Current.MainWindow.Width = 700;
         }
 
         public void ShowPinnedApplications()
         {
             AllAppsVisible = false;
-            if (_originalWindowWidth > 0 && _originalWindowWidth < App.Current.MainWindow.Width)
-                App.Current.MainWindow.Width = _originalWindowWidth;
+            if (_originalWindowWidth > 0 && _originalWindowWidth < Application.Current.MainWindow.Width)
+                Application.Current.MainWindow.Width = _originalWindowWidth;
 
-            ViewState = ApplicationsViewModel.PinnedViewState;
+            ViewState = PinnedViewState;
+        }
+
+        public void Handle(ApplicationExecutedEvent message)
+        {
+            if(!AllAppsVisible)
+                return;
+
+            ShowPinnedApplications();
         }
     }
 }
