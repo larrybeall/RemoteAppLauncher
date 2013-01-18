@@ -97,6 +97,7 @@
     <Compile Include="Infrastructure\Events\ApplicationExecutedEvent.cs" />
     <Compile Include="Infrastructure\Events\ApplicationsChangedEvent.cs" />
     <Compile Include="Infrastructure\Events\InitializationCompleteEvent.cs" />
+    <Compile Include="Infrastructure\Events\LoadingEvent.cs" />
     <Compile Include="Infrastructure\Services\ApplicationService.cs" />
     <Compile Include="Infrastructure\HashUtility.cs" />
     <Compile Include="Infrastructure\Services\EventService.cs" />
@@ -129,7 +130,16 @@
     <Compile Include="Presentation\Screens\AllApplicationsView.xaml.cs">
       <DependentUpon>AllApplicationsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Presentation\Screens\AllApplicationsViewModel.cs" />
+    <Compile Include="Presentation\Screens\ApplicationsView.xaml.cs">
+      <DependentUpon>ApplicationsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Presentation\Screens\ApplicationsViewModel.cs" />
+    <Compile Include="Presentation\Screens\Applications\All.xaml.cs">
+      <DependentUpon>All.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Presentation\Screens\Applications\Pinned.xaml.cs">
+      <DependentUpon>Pinned.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Presentation\Screens\UsageBasedView.xaml.cs">
       <DependentUpon>UsageBasedView.xaml</DependentUpon>
     </Compile>
@@ -161,6 +171,18 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Presentation\Screens\AllApplicationsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Presentation\Screens\ApplicationsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Presentation\Screens\Applications\All.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Presentation\Screens\Applications\Pinned.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

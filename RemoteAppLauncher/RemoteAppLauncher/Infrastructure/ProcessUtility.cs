@@ -30,14 +30,12 @@ namespace RemoteAppLauncher.Infrastructure
 
         public static void OpenControlPanel()
         {
-            string systemPath = Environment.GetFolderPath(Environment.SpecialFolder.System);
-            ExecuteProcess(Path.Combine(systemPath, "control.exe"));
+            ExecuteProcess(PathUtility.ControlPanelPath);
         }
 
         public static void OpenFileExplorer()
         {
-            string systemPath = Environment.GetFolderPath(Environment.SpecialFolder.System);
-            ExecuteProcess(Path.Combine(systemPath, "explorer.exe"));
+            ExecuteProcess(PathUtility.FileExplorerPath);
         }
     }
 }

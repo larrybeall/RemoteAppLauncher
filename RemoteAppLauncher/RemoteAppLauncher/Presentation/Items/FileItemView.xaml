@@ -74,7 +74,7 @@
             Margin="7 5 7 5" 
             TextWrapping="Wrap" 
             TextTrimming="CharacterEllipsis"
-            x:Name="Name"></TextBlock>
+            Text="{Binding Name}"></TextBlock>
     </Grid>
     </Button>
 </UserControl>

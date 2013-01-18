@@ -13,6 +13,31 @@ namespace RemoteAppLauncher.Infrastructure
     internal static class PathUtility
     {
         private static string[] AllowedExtensions = new string[3] { ".exe", ".lnk", ".appref-ms" };
+        private static string _systemPath;
+        private static string _controlPanelPath;
+        private static string _fileExplorerPath;
+
+        public static string SystemPath 
+        {
+            get { return _systemPath ?? (_systemPath = Environment.GetFolderPath(Environment.SpecialFolder.System)); }
+        }
+
+        public static string ControlPanelPath
+        {
+            get { return _controlPanelPath ?? (_controlPanelPath = Path.Combine(SystemPath, "control.exe")); }
+        }
+
+        public static string FileExplorerPath
+        {
+            get
+            {
+                string path = SystemPath;
+                if (Environment.Is64BitOperatingSystem)
+                    path = Environment.GetFolderPath(Environment.SpecialFolder.SystemX86);
+
+                return _fileExplorerPath ?? (_fileExplorerPath = Path.Combine(path, "explorer.exe"));
+            }
+        }
 
         public static bool IsPathDirectory(string path)
         {
@@ -100,6 +125,9 @@ namespace RemoteAppLauncher.Infrastructure
             WalkTree(commonStartMenu, toReturn);
             WalkTree(userStartMenu, toReturn);
 
+            toReturn.Add(CreateEntry(ControlPanelPath, "_", false, "Control Panel"));
+            toReturn.Add(CreateEntry(FileExplorerPath, "_", false, "My Computer"));
+
             return toReturn;
         }
 
@@ -113,8 +141,13 @@ namespace RemoteAppLauncher.Infrastructure
             {
                 if (!directoryEntry.IsDirectory)
                 {
-                    if(foundFiles.All(x => x.Paths[0] != directoryEntry.Paths[0]))
+                    if (foundFiles.All(x => x.Paths[0] != directoryEntry.Paths[0]))
+                    {
+                        if (directoryEntry.ParentDirectory.Equals("programs", StringComparison.InvariantCultureIgnoreCase))
+                            directoryEntry.ParentDirectory = "_";
+
                         foundFiles.Add(directoryEntry);
+                    }
 
                     continue;
                 }
@@ -123,14 +156,14 @@ namespace RemoteAppLauncher.Infrastructure
             }
         }
 
-        private static DirectoryEntry CreateEntry(string path, string parentDirectory, bool isDirectory)
+        private static DirectoryEntry CreateEntry(string path, string parentDirectory, bool isDirectory, string entryName = null)
         {
             string name = isDirectory ? Path.GetFileName(parentDirectory) : Path.GetFileNameWithoutExtension(path);
 
             return new DirectoryEntry
                 {
                     IsDirectory = isDirectory,
-                    Name = name,
+                    Name = entryName ?? name,
                     Paths = new List<string>{ path },
                     ParentDirectory = parentDirectory
                 };

@@ -1,0 +1,145 @@
+﻿<UserControl x:Class="RemoteAppLauncher.Presentation.Screens.ApplicationsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+             xmlns:micro="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
+             xmlns:converters="clr-namespace:RemoteAppLauncher.Presentation.Converters"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/ListBox.xaml" />
+                <ResourceDictionary Source="/Resources/Icons.xaml" />
+                <ResourceDictionary>
+                    <SolidColorBrush x:Key="ImageBackground" Color="{DynamicResource Gray2}"/>
+                    <SolidColorBrush x:Key="InitializingBackground" Color="{DynamicResource Gray2}" />
+                    <converters:FileItemToVisibilityConverter x:Key="FileItemVisibilityConverter"/>
+                    <converters:DebugConverter x:Key="DebugConverter"/>
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+        <controls:TransitioningContentControl 
+            Grid.Row="0"
+            micro:View.Context="{Binding ViewState, Mode=TwoWay}" 
+            micro:View.Model="{Binding}"
+            Transition="RightTransition" />
+        <DockPanel Grid.Row="1">
+            <DockPanel.Style>
+                <Style TargetType="DockPanel">
+                    <Setter Property="Visibility" Value="Visible"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding AllAppsVisible}" Value="True">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DockPanel.Style>
+            <DockPanel.Resources>
+                <ResourceDictionary>
+                    <ResourceDictionary.MergedDictionaries>
+                        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/FlatButton.xaml" />
+                        <ResourceDictionary>
+                            <Style x:Key="BottomButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                                <Setter Property="Padding" Value="3 1 3 0"/>
+                                <Setter Property="Margin" Value="-3" />
+                                <Setter Property="Background" Value="Transparent" />
+                            </Style>
+                        </ResourceDictionary>
+                    </ResourceDictionary.MergedDictionaries>
+                </ResourceDictionary>
+            </DockPanel.Resources>
+            <Button 
+                Style="{StaticResource BottomButton}" 
+                Margin="1 0 0 0" 
+                DockPanel.Dock="Left"
+                ToolTip="Control Panel"
+                micro:Message.Attach="OpenControlPanel">
+                <Button.Content>
+                    <Rectangle Width="15" Height="15">
+                        <Rectangle.Fill>
+                            <VisualBrush Visual="{StaticResource appbar_windows}"></VisualBrush>
+                        </Rectangle.Fill>
+                    </Rectangle>
+                </Button.Content>
+            </Button>
+            <Button 
+                Style="{StaticResource BottomButton}" 
+                DockPanel.Dock="Left"
+                ToolTip="File Explorer"
+                micro:Message.Attach="OpenFileExplorer">
+                <Button.Content>
+                    <Rectangle Width="15" Height="15">
+                        <Rectangle.Fill>
+                            <VisualBrush Visual="{StaticResource appbar_folder}"></VisualBrush>
+                        </Rectangle.Fill>
+                    </Rectangle>
+                </Button.Content>
+            </Button>
+            <Button 
+                DockPanel.Dock="Right" 
+                HorizontalAlignment="Right" 
+                Style="{StaticResource BottomButton}" 
+                micro:Message.Attach="ShowAllApplications">
+                <Button.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Margin="0 0 4 -1" VerticalAlignment="Bottom">APPS</TextBlock>
+                        <Rectangle Height="17" Width="17" Margin="0 0 0 -4">
+                            <Rectangle.Fill>
+                                <VisualBrush Visual="{StaticResource appbar_arrow_right}"></VisualBrush>
+                            </Rectangle.Fill>
+                        </Rectangle>
+                    </StackPanel>
+                </Button.Content>
+            </Button>
+        </DockPanel>
+        <DockPanel Grid.Row="1">
+            <DockPanel.Style>
+                <Style TargetType="DockPanel">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding AllAppsVisible}" Value="True">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DockPanel.Style>
+            <DockPanel.Resources>
+                <ResourceDictionary>
+                    <ResourceDictionary.MergedDictionaries>
+                        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/FlatButton.xaml" />
+                        <ResourceDictionary>
+                            <Style x:Key="BottomButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                                <Setter Property="Padding" Value="3 1 3 0"/>
+                                <Setter Property="Margin" Value="-3" />
+                                <Setter Property="Background" Value="Transparent" />
+                            </Style>
+                        </ResourceDictionary>
+                    </ResourceDictionary.MergedDictionaries>
+                </ResourceDictionary>
+            </DockPanel.Resources>
+            <Button 
+                DockPanel.Dock="Left" 
+                HorizontalAlignment="Left" 
+                Style="{StaticResource BottomButton}" 
+                micro:Message.Attach="ShowPinnedApplications">
+                <Button.Content>
+                    <Rectangle Height="17" Width="17" Margin="0 0 0 -2">
+                        <Rectangle.Fill>
+                            <VisualBrush Visual="{StaticResource appbar_arrow_left}"></VisualBrush>
+                        </Rectangle.Fill>
+                    </Rectangle>
+                </Button.Content>
+            </Button>
+        </DockPanel>
+    </Grid>
+</UserControl>
