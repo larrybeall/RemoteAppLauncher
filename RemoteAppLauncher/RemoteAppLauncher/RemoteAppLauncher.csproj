@@ -97,8 +97,9 @@
     <Compile Include="Infrastructure\Events\ApplicationExecutedEvent.cs" />
     <Compile Include="Infrastructure\Events\ApplicationsChangedEvent.cs" />
     <Compile Include="Infrastructure\Events\InitializationCompleteEvent.cs" />
+    <Compile Include="Infrastructure\Events\LoadingEvent.cs" />
     <Compile Include="Infrastructure\Services\ApplicationService.cs" />
-    <Compile Include="Infrastructure\HashUtility.cs" />
+    <Compile Include="Infrastructure\Utilities\HashUtility.cs" />
     <Compile Include="Infrastructure\Services\EventService.cs" />
     <Compile Include="Presentation\AutoRefreshCollectionViewSource.cs" />
     <Compile Include="Presentation\Converters\DebugConverter.cs" />
@@ -108,32 +109,22 @@
     <Compile Include="Presentation\Converters\ObjectToTypeConverter.cs" />
     <Compile Include="Presentation\Converters\PathToImageSourceConverter.cs" />
     <Compile Include="Presentation\Converters\TreeViewItemToImageSourceConverter.cs" />
-    <Compile Include="Infrastructure\IconUtility.cs" />
-    <Compile Include="Infrastructure\PathUtility.cs" />
-    <Compile Include="Infrastructure\ProcessUtility.cs" />
+    <Compile Include="Infrastructure\Utilities\IconUtility.cs" />
+    <Compile Include="Infrastructure\Utilities\PathUtility.cs" />
+    <Compile Include="Infrastructure\Utilities\ProcessUtility.cs" />
     <Compile Include="Presentation\Items\DirectoryItemViewModel.cs" />
-    <Compile Include="Presentation\Items\DirectoryItemView.xaml.cs">
-      <DependentUpon>DirectoryItemView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Presentation\Items\FileItemView.xaml.cs">
-      <DependentUpon>FileItemView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Presentation\Items\FileItemViewModel.cs" />
-    <Compile Include="Presentation\Items\LargeIconEntryView.xaml.cs">
-      <DependentUpon>LargeIconEntryView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Presentation\Items\SmallIconEntryView.xaml.cs">
-      <DependentUpon>SmallIconEntryView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Data\Models\DirectoryEntry.cs" />
-    <Compile Include="Presentation\Screens\AllApplicationsView.xaml.cs">
-      <DependentUpon>AllApplicationsView.xaml</DependentUpon>
+    <Compile Include="Presentation\Screens\ApplicationsView.xaml.cs">
+      <DependentUpon>ApplicationsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Presentation\Screens\AllApplicationsViewModel.cs" />
-    <Compile Include="Presentation\Screens\UsageBasedView.xaml.cs">
-      <DependentUpon>UsageBasedView.xaml</DependentUpon>
+    <Compile Include="Presentation\Screens\ApplicationsViewModel.cs" />
+    <Compile Include="Presentation\Screens\Applications\All.xaml.cs">
+      <DependentUpon>All.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Presentation\Screens\UsageBasedViewModel.cs" />
+    <Compile Include="Presentation\Screens\Applications\Pinned.xaml.cs">
+      <DependentUpon>Pinned.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Presentation\VirtualizingWrapPanel.cs" />
     <Compile Include="ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
@@ -144,23 +135,27 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="AppBootstrapper.cs" />
-    <Page Include="Presentation\Items\DirectoryItemView.xaml">
+    <Page Include="Presentation\Items\BriefItemDataTemplates.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Presentation\Items\FileItemView.xaml">
+    <Page Include="Presentation\Items\FullItemDataTemplates.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Presentation\Items\LargeIconEntryView.xaml">
+    <Page Include="Presentation\Screens\ApplicationsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Presentation\Items\SmallIconEntryView.xaml">
+    <Page Include="Presentation\Screens\Applications\All.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Presentation\Screens\AllApplicationsView.xaml">
+    <Page Include="Presentation\Screens\Applications\Pinned.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Presentation\Resources\Common.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -168,15 +163,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Presentation\Screens\UsageBasedView.xaml">
+    <Page Include="Presentation\Resources\ListBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Resources\ListBox.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Resources\ScrollBars.xaml">
+    <Page Include="Presentation\Resources\ScrollBars.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

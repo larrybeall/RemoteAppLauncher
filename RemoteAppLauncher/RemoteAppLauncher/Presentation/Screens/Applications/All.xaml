@@ -1,0 +1,43 @@
+﻿<UserControl x:Class="RemoteAppLauncher.Presentation.Screens.Applications.All"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:pres="clr-namespace:RemoteAppLauncher.Presentation"
+             xmlns:items="clr-namespace:RemoteAppLauncher.Presentation.Items"
+             xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Presentation/Resources/ListBox.xaml" />
+                <ResourceDictionary>
+                    <SolidColorBrush x:Key="ImageBackground" Color="{DynamicResource Gray2}"/>
+                    <SolidColorBrush Color="{DynamicResource Gray3}" x:Key="UnderlineColor"/>
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <ListBox
+        ItemsSource="{Binding Applications}"
+        SelectionMode="Single"
+        Background="Transparent"
+        HorizontalAlignment="Stretch"
+        ScrollViewer.VerticalScrollBarVisibility="Disabled"
+        cal:Message.Attach="[Event SelectionChanged] = [Action FileSelected($source)]">
+        <ListBox.ItemsPanel>
+            <ItemsPanelTemplate>
+                <pres:VirtualizingWrapPanel
+                Orientation="Vertical"></pres:VirtualizingWrapPanel>
+            </ItemsPanelTemplate>
+        </ListBox.ItemsPanel>
+        <ListBox.Resources>
+            <ResourceDictionary>
+                <ResourceDictionary.MergedDictionaries>
+                    <ResourceDictionary Source="/Presentation/Items/FullItemDataTemplates.xaml" />
+                </ResourceDictionary.MergedDictionaries>
+            </ResourceDictionary>
+        </ListBox.Resources>
+    </ListBox>
+</UserControl>

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using System;
 using System.Collections.Generic;
+using RemoteAppLauncher.Infrastructure.Utilities;
 using RemoteAppLauncher.Presentation.Items;
 using RemoteAppLauncher.Infrastructure.Events;
 

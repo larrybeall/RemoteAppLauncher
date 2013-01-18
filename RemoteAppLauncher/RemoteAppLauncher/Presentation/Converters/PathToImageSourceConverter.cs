@@ -2,6 +2,7 @@
 using System;
 using System.IO;
 using System.Windows.Data;
+using RemoteAppLauncher.Infrastructure.Utilities;
 
 namespace RemoteAppLauncher.Presentation.Converters
 {
