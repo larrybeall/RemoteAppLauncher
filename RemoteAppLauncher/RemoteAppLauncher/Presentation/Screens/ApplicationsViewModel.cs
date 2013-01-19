@@ -19,7 +19,6 @@ namespace RemoteAppLauncher.Presentation.Screens
         private List<ViewAware> _applications = new List<ViewAware>();
         private string _searchFilter;
         private double _originalWindowWidth;
-        private bool _allAppsVisible;
         private string _viewContext;
 
         public ApplicationsViewModel()
@@ -64,12 +63,6 @@ namespace RemoteAppLauncher.Presentation.Screens
             }
         }
 
-        public bool AllAppsVisible
-        {
-            get { return _allAppsVisible; }
-            set { _allAppsVisible = value; NotifyOfPropertyChange(() => AllAppsVisible); }
-        }
-
         public void FileSelected(ListBox source)
         {
             if (source == null)
@@ -100,7 +93,6 @@ namespace RemoteAppLauncher.Presentation.Screens
 
         public void ShowAllApplications()
         {
-            AllAppsVisible = true;
             ViewState = AllViewState;
             _originalWindowWidth = Application.Current.MainWindow.Width;
             Application.Current.MainWindow.Width = 700;
@@ -108,7 +100,6 @@ namespace RemoteAppLauncher.Presentation.Screens
 
         public void ShowPinnedApplications()
         {
-            AllAppsVisible = false;
             if (_originalWindowWidth > 0 && _originalWindowWidth < Application.Current.MainWindow.Width)
                 Application.Current.MainWindow.Width = _originalWindowWidth;
 
@@ -117,7 +108,7 @@ namespace RemoteAppLauncher.Presentation.Screens
 
         public void Handle(ApplicationExecutedEvent message)
         {
-            if(!AllAppsVisible)
+            if(ViewState != AllViewState)
                 return;
 
             ShowPinnedApplications();

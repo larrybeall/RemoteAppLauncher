@@ -1,12 +1,12 @@
 ﻿<Application x:Class="RemoteAppLauncher.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:RemoteAppLauncher">
+             xmlns:infrastructure="clr-namespace:RemoteAppLauncher.Infrastructure">
     <Application.Resources>
          <ResourceDictionary>
              <ResourceDictionary.MergedDictionaries>
                  <ResourceDictionary>
-                     <local:AppBootstrapper x:Key="bootstrapper" />
+                     <infrastructure:AppBootstrapper x:Key="bootstrapper" />
                  </ResourceDictionary>
              </ResourceDictionary.MergedDictionaries>
          </ResourceDictionary>

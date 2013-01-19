@@ -1,13 +1,9 @@
 ﻿using Caliburn.Micro;
 using RemoteAppLauncher.Data;
 using RemoteAppLauncher.Infrastructure.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using RemoteAppLauncher.Presentation.Shell;
 
-namespace RemoteAppLauncher
+namespace RemoteAppLauncher.Infrastructure
 {
     public class AppBootstrapper : Bootstrapper<ShellViewModel>
     {

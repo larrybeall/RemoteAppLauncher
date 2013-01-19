@@ -1,15 +1,9 @@
 ﻿using Caliburn.Micro;
-using RemoteAppLauncher.Infrastructure;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using RemoteAppLauncher.Presentation.Screens;
 using RemoteAppLauncher.Infrastructure.Services;
 using RemoteAppLauncher.Infrastructure.Events;
 
-namespace RemoteAppLauncher
+namespace RemoteAppLauncher.Presentation.Shell
 {
     public class ShellViewModel 
             : Conductor<IScreen>.Collection.OneActive, 
