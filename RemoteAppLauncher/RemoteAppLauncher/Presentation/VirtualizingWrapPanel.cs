@@ -157,7 +157,9 @@ namespace RemoteAppLauncher.Presentation
             }
             else
             {
-                _viewport.Width = visibleSections;
+                if(visibleSections > _viewport.Width)
+                    _viewport.Width = visibleSections;
+
                 _viewport.Height = pixelMeasuredViewportSize.Height;
             }
 
