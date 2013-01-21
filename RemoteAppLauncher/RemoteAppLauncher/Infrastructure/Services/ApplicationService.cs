@@ -129,6 +129,11 @@ namespace RemoteAppLauncher.Infrastructure.Services
             UpdateFromViewModel(fileVm);
         }
 
+        public void UnpinApp(FileItemViewModel fileVm)
+        {
+            UpdateFromViewModel(fileVm);
+        }
+
         public void SetIconPath(FileItemViewModel fileVm)
         {
             UpdateFromViewModel(fileVm);

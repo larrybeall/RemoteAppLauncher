@@ -168,7 +168,13 @@ namespace RemoteAppLauncher.Presentation
             }
             else
             {
-                _extent.Width = _abstractPanel.SectionCount + ViewportWidth - 1;
+                // this change is to keep the scrolling more or less smooth.  
+                // This causes the scroll bar to be a little off at the end
+                // but that is a small sacrifice for smooth scrolling.
+                var currentWidth = _abstractPanel.SectionCount + ViewportWidth - 1;
+
+                if (currentWidth > _extent.Width)
+                    _extent.Width = currentWidth;
             }
             _owner.InvalidateScrollInfo();
         }
@@ -577,7 +583,10 @@ namespace RemoteAppLauncher.Presentation
 
         public double ExtentWidth
         {
-            get { return _extent.Width; }
+            get
+            {
+                return _extent.Width;
+            }
         }
 
         public double HorizontalOffset
@@ -843,7 +852,7 @@ namespace RemoteAppLauncher.Presentation
                     if (_currentSetItemIndex + 1 < Items.Count)
                     {
                         int itemsLeft = Items.Count - _currentSetItemIndex;
-                        ret += itemsLeft / _averageItemsPerSection + 1;
+                        ret += (int)Math.Ceiling((double)itemsLeft / (double)_averageItemsPerSection + 1);
                     }
                     return ret;
                 }

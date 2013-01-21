@@ -20,7 +20,6 @@ namespace RemoteAppLauncher.Presentation.Screens
         private string _searchFilter;
         private double _originalWindowWidth;
         private string _viewContext;
-        private bool _searchBarVisible;
 
         public ApplicationsViewModel()
         {
@@ -32,18 +31,6 @@ namespace RemoteAppLauncher.Presentation.Screens
         public List<ViewAware> Applications
         {
             get { return _applications; }
-        }
-
-        public bool SearchBarVisible
-        {
-            get { return _searchBarVisible; }
-            set
-            {
-                if (_searchBarVisible == value) return;
-
-                _searchBarVisible = value;
-                NotifyOfPropertyChange(() => SearchBarVisible);
-            }
         }
 
         public string SearchFilter
@@ -117,20 +104,15 @@ namespace RemoteAppLauncher.Presentation.Screens
                 Application.Current.MainWindow.Width = _originalWindowWidth;
 
             ViewState = PinnedViewState;
-            SearchBarVisible = false;
-        }
-
-        public void ShowSearchBar()
-        {
-            SearchBarVisible = !SearchBarVisible;
+            SearchFilter = string.Empty;
         }
 
         public void Handle(ApplicationExecutedEvent message)
         {
-            if(!string.IsNullOrEmpty(SearchFilter))
+            if (!string.IsNullOrEmpty(SearchFilter))
                 SearchFilter = string.Empty;
 
-            if(ViewState != AllViewState)
+            if (ViewState != AllViewState)
                 return;
 
             ShowPinnedApplications();

@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:pres="clr-namespace:RemoteAppLauncher.Presentation"
              xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
+             xmlns:props="clr-namespace:RemoteAppLauncher.Presentation.AttachedProperties"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
@@ -18,6 +19,11 @@
                 <ResourceDictionary Source="/Presentation/Resources/ListBox.xaml" />
                 <ResourceDictionary Source="/Resources/Icons.xaml" />
                 <ResourceDictionary>
+                    <pres:AutoRefreshCollectionViewSource 
+                        props:Filters.FilterText="{Binding SearchFilter}"  
+                        Source="{Binding Applications}" 
+                        Filter="SortedApplications_OnFilter" 
+                        x:Key="FilteredApplications"/>
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
@@ -32,62 +38,34 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <DockPanel
-            Margin="0"
+        <Button
             Grid.Column="0"
-            Grid.Row="0"
-            Grid.RowSpan="2">
-            <Button
-                DockPanel.Dock="Top"
-                Width="42"
-                Height="42"
-                Margin="-8 0 0 0"
-                cal:Message.Attach="ShowPinnedApplications()">
-                <Button.Style>
-                    <Style TargetType="Button" BasedOn="{StaticResource MetroCircleButtonStyle}">
-                        <Setter Property="Visibility" Value="Collapsed"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding ViewState}" Value="All">
-                                <Setter Property="Visibility" Value="Visible"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Button.Style>
-                <Rectangle Width="14" Height="14">
-                    <Rectangle.Fill>
-                        <VisualBrush Visual="{StaticResource appbar_arrow_left}"/>
-                    </Rectangle.Fill>
-                </Rectangle>
-            </Button>
-            <Button
-                DockPanel.Dock="Bottom"
-                VerticalAlignment="Bottom"
-                Width="42"
-                Height="42"
-                Margin="-8 0 0 0"
-                cal:Message.Attach="ShowSearchBar()">
-                <Button.Style>
-                    <Style TargetType="Button" BasedOn="{StaticResource MetroCircleButtonStyle}">
-                        <Setter Property="Visibility" Value="Collapsed"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding ViewState}" Value="All">
-                                <Setter Property="Visibility" Value="Visible"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Button.Style>
-                <Rectangle Width="14" Height="14">
-                    <Rectangle.Fill>
-                        <VisualBrush Visual="{StaticResource appbar_magnify}"/>
-                    </Rectangle.Fill>
-                </Rectangle>
-            </Button>
-        </DockPanel>
+            VerticalAlignment="Top"
+            Width="42"
+            Height="42"
+            Margin="-8 0 0 0"
+            cal:Message.Attach="ShowPinnedApplications()">
+            <Button.Style>
+                <Style TargetType="Button" BasedOn="{StaticResource MetroCircleButtonStyle}">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ViewState}" Value="All">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+            <Rectangle Width="14" Height="14">
+                <Rectangle.Fill>
+                    <VisualBrush Visual="{StaticResource appbar_arrow_left}"/>
+                </Rectangle.Fill>
+            </Rectangle>
+        </Button>
 
         <ListBox
             Grid.Column="1"
             Grid.Row="0"
-            ItemsSource="{Binding Applications}"
+            ItemsSource="{Binding Source={StaticResource FilteredApplications}}"
             SelectionMode="Single"
             Background="Transparent"
             HorizontalAlignment="Stretch"
@@ -113,18 +91,8 @@
             Height="44"
             Grid.Column="1"
             Grid.Row="1" Orientation="Horizontal">
-            <StackPanel.Style>
-                <Style TargetType="StackPanel">
-                    <Setter Property="Visibility" Value="Collapsed"/>
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding SearchBarVisible}" Value="True">
-                            <Setter Property="Visibility" Value="Visible"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </StackPanel.Style>
             <TextBlock VerticalAlignment="Center" FontSize="14">Filter Apps:</TextBlock>
-            <TextBox x:Name="SearchFilter" Width="250" Margin="7" HorizontalContentAlignment="Center" FontSize="12"></TextBox>
+            <TextBox x:Name="SearchFilter" Width="250" Margin="7" VerticalContentAlignment="Center" FontSize="12"></TextBox>
         </StackPanel>
     </Grid>
 </UserControl>

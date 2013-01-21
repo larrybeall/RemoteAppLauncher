@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using RemoteAppLauncher.Presentation.Items;
 
 namespace RemoteAppLauncher.Presentation.Screens.Applications
 {
@@ -23,6 +24,27 @@ namespace RemoteAppLauncher.Presentation.Screens.Applications
         public All()
         {
             InitializeComponent();
+        }
+
+        private void SortedApplications_OnFilter(object sender, FilterEventArgs e)
+        {
+            var vm = DataContext as ApplicationsViewModel;
+            if(vm == null || e.Item == null)
+                return;
+
+            if (string.IsNullOrEmpty(vm.SearchFilter))
+            {
+                e.Accepted = true;
+                return;
+            }
+
+            if (e.Item.GetType() == typeof (DirectoryItemViewModel))
+            {
+                e.Accepted = false;
+                return;
+            }
+
+            e.Accepted = ((FileItemViewModel) e.Item).Name.IndexOf(vm.SearchFilter, StringComparison.InvariantCultureIgnoreCase) >= 0;
         }
     }
 }

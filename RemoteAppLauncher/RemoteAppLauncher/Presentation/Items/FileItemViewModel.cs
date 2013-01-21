@@ -116,6 +116,13 @@ namespace RemoteAppLauncher.Presentation.Items
             ApplicationService.Instance.PinApp(this);
         }
 
+        public void UnpinApp()
+        {
+            Pinned = false;
+
+            ApplicationService.Instance.UnpinApp(this);
+        }
+
         public void SetIconPath()
         {
             ApplicationService.Instance.SetIconPath(this);
