@@ -3,25 +3,24 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
              xmlns:micro="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
-             xmlns:converters="clr-namespace:RemoteAppLauncher.Presentation.Converters"
              xmlns:pres="clr-namespace:RemoteAppLauncher.Presentation"
              xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+             xmlns:props="clr-namespace:RemoteAppLauncher.Presentation.AttachedProperties"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colours.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/VS/Colours.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/VS/Styles.xaml"/>
                 <ResourceDictionary Source="/Presentation/Resources/ListBox.xaml" />
                 <ResourceDictionary Source="/Resources/Icons.xaml" />
                 <ResourceDictionary>
-                    <SolidColorBrush x:Key="ImageBackground" Color="{DynamicResource Gray2}"/>
-                    <SolidColorBrush x:Key="InitializingBackground" Color="{DynamicResource Gray2}" />
-                    <converters:FileItemToVisibilityConverter x:Key="FileItemVisibilityConverter"/>
-                    <converters:DebugConverter x:Key="DebugConverter"/>
-
-                    <pres:AutoRefreshCollectionViewSource Source="{Binding Applications}" Filter="SortedApplications_OnFilter" x:Key="SortedApplications">
+                    <pres:AutoRefreshCollectionViewSource props:Filters.FilterText="{Binding SearchFilter}"  Source="{Binding Applications}" Filter="SortedApplications_OnFilter" x:Key="SortedApplications">
                         <pres:AutoRefreshCollectionViewSource.SortDescriptions>
                             <scm:SortDescription PropertyName="Pinned" Direction="Descending"/>
                             <scm:SortDescription PropertyName="Accesses" Direction="Descending"/>
@@ -33,6 +32,12 @@
         </ResourceDictionary>
         
     </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+
         <ListBox
             Grid.Row="0"
             ItemsSource="{Binding Source={StaticResource SortedApplications}}"
@@ -54,6 +59,31 @@
                     </ResourceDictionary.MergedDictionaries>
                 </ResourceDictionary>
             </ListBox.Resources>
-        </ListBox>
-        
+        </ListBox> 
+
+        <Button
+            Grid.Column="1"
+            Width="42"
+            Height="42"
+            VerticalAlignment="Top"
+            Margin="0 0 -8 0"
+            ToolTip="All Applications"
+            micro:Message.Attach="ShowAllApplications()">
+            <Button.Style>
+                <Style TargetType="Button" BasedOn="{StaticResource MetroCircleButtonStyle}">
+                    <Setter Property="Visibility" Value="Visible"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ViewState}" Value="All">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+            <Rectangle Width="14" Height="14">
+                <Rectangle.Fill>
+                    <VisualBrush Visual="{StaticResource appbar_arrow_right}"/>
+                </Rectangle.Fill>
+            </Rectangle>
+        </Button>
+    </Grid>
 </UserControl>

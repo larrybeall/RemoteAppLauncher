@@ -112,6 +112,7 @@
     <Compile Include="Infrastructure\Utilities\IconUtility.cs" />
     <Compile Include="Infrastructure\Utilities\PathUtility.cs" />
     <Compile Include="Infrastructure\Utilities\ProcessUtility.cs" />
+    <Compile Include="Presentation\AttachedProperties\Filters.cs" />
     <Compile Include="Presentation\Items\DirectoryItemViewModel.cs" />
     <Compile Include="Presentation\Items\FileItemViewModel.cs" />
     <Compile Include="Data\Models\DirectoryEntry.cs" />

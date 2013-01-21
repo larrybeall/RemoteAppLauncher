@@ -4,40 +4,127 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:pres="clr-namespace:RemoteAppLauncher.Presentation"
-             xmlns:items="clr-namespace:RemoteAppLauncher.Presentation.Items"
              xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colours.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/VS/Colours.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/VS/Styles.xaml"/>
                 <ResourceDictionary Source="/Presentation/Resources/ListBox.xaml" />
+                <ResourceDictionary Source="/Resources/Icons.xaml" />
                 <ResourceDictionary>
-                    <SolidColorBrush x:Key="ImageBackground" Color="{DynamicResource Gray2}"/>
-                    <SolidColorBrush Color="{DynamicResource Gray3}" x:Key="UnderlineColor"/>
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-    <ListBox
-        ItemsSource="{Binding Applications}"
-        SelectionMode="Single"
-        Background="Transparent"
-        HorizontalAlignment="Stretch"
-        ScrollViewer.VerticalScrollBarVisibility="Disabled"
-        cal:Message.Attach="[Event SelectionChanged] = [Action FileSelected($source)]">
-        <ListBox.ItemsPanel>
-            <ItemsPanelTemplate>
-                <pres:VirtualizingWrapPanel
-                Orientation="Vertical"></pres:VirtualizingWrapPanel>
-            </ItemsPanelTemplate>
-        </ListBox.ItemsPanel>
-        <ListBox.Resources>
-            <ResourceDictionary>
-                <ResourceDictionary.MergedDictionaries>
-                    <ResourceDictionary Source="/Presentation/Items/FullItemDataTemplates.xaml" />
-                </ResourceDictionary.MergedDictionaries>
-            </ResourceDictionary>
-        </ListBox.Resources>
-    </ListBox>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <DockPanel
+            Margin="0"
+            Grid.Column="0"
+            Grid.Row="0"
+            Grid.RowSpan="2">
+            <Button
+                DockPanel.Dock="Top"
+                Width="42"
+                Height="42"
+                Margin="-8 0 0 0"
+                cal:Message.Attach="ShowPinnedApplications()">
+                <Button.Style>
+                    <Style TargetType="Button" BasedOn="{StaticResource MetroCircleButtonStyle}">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ViewState}" Value="All">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+                <Rectangle Width="14" Height="14">
+                    <Rectangle.Fill>
+                        <VisualBrush Visual="{StaticResource appbar_arrow_left}"/>
+                    </Rectangle.Fill>
+                </Rectangle>
+            </Button>
+            <Button
+                DockPanel.Dock="Bottom"
+                VerticalAlignment="Bottom"
+                Width="42"
+                Height="42"
+                Margin="-8 0 0 0"
+                cal:Message.Attach="ShowSearchBar()">
+                <Button.Style>
+                    <Style TargetType="Button" BasedOn="{StaticResource MetroCircleButtonStyle}">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ViewState}" Value="All">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+                <Rectangle Width="14" Height="14">
+                    <Rectangle.Fill>
+                        <VisualBrush Visual="{StaticResource appbar_magnify}"/>
+                    </Rectangle.Fill>
+                </Rectangle>
+            </Button>
+        </DockPanel>
+
+        <ListBox
+            Grid.Column="1"
+            Grid.Row="0"
+            ItemsSource="{Binding Applications}"
+            SelectionMode="Single"
+            Background="Transparent"
+            HorizontalAlignment="Stretch"
+            ScrollViewer.VerticalScrollBarVisibility="Disabled"
+            cal:Message.Attach="[Event SelectionChanged] = [Action FileSelected($source)]">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <pres:VirtualizingWrapPanel
+                    Orientation="Vertical"></pres:VirtualizingWrapPanel>
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+            <ListBox.Resources>
+                <ResourceDictionary>
+                    <ResourceDictionary.MergedDictionaries>
+                        <ResourceDictionary Source="/Presentation/Items/FullItemDataTemplates.xaml" />
+                    </ResourceDictionary.MergedDictionaries>
+                </ResourceDictionary>
+            </ListBox.Resources>
+        </ListBox>
+        
+        
+        <StackPanel 
+            Height="44"
+            Grid.Column="1"
+            Grid.Row="1" Orientation="Horizontal">
+            <StackPanel.Style>
+                <Style TargetType="StackPanel">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding SearchBarVisible}" Value="True">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </StackPanel.Style>
+            <TextBlock VerticalAlignment="Center" FontSize="14">Filter Apps:</TextBlock>
+            <TextBox x:Name="SearchFilter" Width="250" Margin="7" HorizontalContentAlignment="Center" FontSize="12"></TextBox>
+        </StackPanel>
+    </Grid>
 </UserControl>

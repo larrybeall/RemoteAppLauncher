@@ -19,46 +19,13 @@
                 <ResourceDictionary Source="/Presentation/Resources/ListBox.xaml" />
                 <ResourceDictionary Source="/Resources/Icons.xaml" />
                 <ResourceDictionary>
+                    <converters:DebugConverter x:Key="DebugConverter"/>
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
-
     </UserControl.Resources>
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="Auto"/>
-        </Grid.ColumnDefinitions>
-        
-        <controls:TransitioningContentControl 
-            Grid.Column="0"
-            micro:View.Context="{Binding ViewState, Mode=TwoWay}" 
-            micro:View.Model="{Binding}"
-            Transition="RightTransition" />
-        
-        <Button
-            Grid.Column="1"
-            Width="42"
-            Height="42"
-            VerticalAlignment="Top"
-            Margin="0 0 -8 0"
-            ToolTip="All Applications"
-            micro:Message.Attach="ShowAllApplications()">
-            <Button.Style>
-                <Style TargetType="Button" BasedOn="{StaticResource MetroCircleButtonStyle}">
-                    <Setter Property="Visibility" Value="Visible"/>
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding ViewState}" Value="All">
-                            <Setter Property="Visibility" Value="Collapsed"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Button.Style>
-            <Rectangle Width="14" Height="14">
-                <Rectangle.Fill>
-                    <VisualBrush Visual="{StaticResource appbar_arrow_right}"/>
-                </Rectangle.Fill>
-            </Rectangle>
-        </Button>
-    </Grid>
+    <controls:TransitioningContentControl 
+        Grid.Column="1"
+        micro:View.Context="{Binding ViewState, Mode=TwoWay}" 
+        micro:View.Model="{Binding}" Transition="LeftTransition"/>
 </UserControl>
