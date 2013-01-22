@@ -19,6 +19,7 @@
                 <ResourceDictionary>
                     <converters:DebugConverter x:Key="DebugConverter" />
                     <SolidColorBrush x:Key="InitializingBackground" Color="{DynamicResource Gray2}" />
+                    
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

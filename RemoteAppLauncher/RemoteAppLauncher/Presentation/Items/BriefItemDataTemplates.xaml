@@ -7,21 +7,82 @@
         <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colours.xaml" />
         <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/VS/Colours.xaml"/>
         <ResourceDictionary Source="/Resources/Icons.xaml" />
-        <ResourceDictionary Source="/Presentation/Resources/Common.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
     <SolidColorBrush x:Key="ImageBackground" Color="{DynamicResource Gray2}"/>
     <SolidColorBrush Color="{DynamicResource Gray3}" x:Key="UnderlineColor"/>
 
+    <Style TargetType="{x:Type ToolTip}">
+        <Setter Property="ContentTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <TextBlock Foreground="{DynamicResource WhiteBrush}" Text="{Binding}"/>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <DataTemplate DataType="{x:Type items:DirectoryItemViewModel}">
     </DataTemplate>
 
     <DataTemplate DataType="{x:Type items:FileItemViewModel}">
-        <Button cal:Message.Attach="Execute()" Width="48" Height="48">
+        <Button cal:Message.Attach="Execute()" Width="48" Height="48" ToolTip="{Binding Name}">
             <Button.Style>
                 <Style TargetType="Button">
                     <Setter Property="OverridesDefaultStyle" Value="True"/>
-                    <Setter Property="ContextMenu" Value="{StaticResource ItemContextMenu}"/>
+                    <Setter Property="ContextMenu">
+                        <Setter.Value>
+                            <ContextMenu>
+                                <MenuItem Header="Pin App" cal:Message.Attach="PinApp()">
+                                    <MenuItem.Style>
+                                        <Style TargetType="{x:Type MenuItem}" BasedOn="{StaticResource {x:Type MenuItem}}">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Pinned}" Value="True">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </MenuItem.Style>
+                                    <MenuItem.Icon>
+                                        <Rectangle Width="12" Height="12" Margin="4 2 4 4">
+                                            <Rectangle.Fill>
+                                                <VisualBrush Visual="{StaticResource appbar_pin}"/>
+                                            </Rectangle.Fill>
+                                        </Rectangle>
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                <MenuItem Header="Unpin App" cal:Message.Attach="UnpinApp()">
+                                    <MenuItem.Style>
+                                        <Style TargetType="{x:Type MenuItem}" BasedOn="{StaticResource {x:Type MenuItem}}">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Pinned}" Value="True">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </MenuItem.Style>
+                                    <MenuItem.Icon>
+                                        <Rectangle Width="12" Height="12" Margin="4 2 4 4">
+                                            <Rectangle.Fill>
+                                                <VisualBrush Visual="{StaticResource appbar_pin_rotated_315}"/>
+                                            </Rectangle.Fill>
+                                        </Rectangle>
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                <MenuItem Header="Set Icon Path" cal:Message.Attach="SetIconPath()">
+                                    <MenuItem.Icon>
+                                        <Rectangle Width="12" Height="12" Margin="4 1 4 4">
+                                            <Rectangle.Fill>
+                                                <VisualBrush Visual="{StaticResource appbar_image}"/>
+                                            </Rectangle.Fill>
+                                        </Rectangle>
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                            </ContextMenu>
+                        </Setter.Value>
+                    </Setter>
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="Button">

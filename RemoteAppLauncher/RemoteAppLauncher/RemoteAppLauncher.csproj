@@ -103,16 +103,12 @@
     <Compile Include="Infrastructure\Services\EventService.cs" />
     <Compile Include="Presentation\AutoRefreshCollectionViewSource.cs" />
     <Compile Include="Presentation\Converters\DebugConverter.cs" />
-    <Compile Include="Presentation\Converters\DirectoryToImageSourceConverter.cs" />
-    <Compile Include="Presentation\Converters\FileItemToVisibilityConverter.cs" />
-    <Compile Include="Presentation\Converters\NotEqualNullConverter.cs" />
     <Compile Include="Presentation\Converters\ObjectToTypeConverter.cs" />
-    <Compile Include="Presentation\Converters\PathToImageSourceConverter.cs" />
-    <Compile Include="Presentation\Converters\TreeViewItemToImageSourceConverter.cs" />
     <Compile Include="Infrastructure\Utilities\IconUtility.cs" />
     <Compile Include="Infrastructure\Utilities\PathUtility.cs" />
     <Compile Include="Infrastructure\Utilities\ProcessUtility.cs" />
     <Compile Include="Presentation\AttachedProperties\Filters.cs" />
+    <Compile Include="Presentation\Converters\PinnedToGroupNameConverter.cs" />
     <Compile Include="Presentation\Items\DirectoryItemViewModel.cs" />
     <Compile Include="Presentation\Items\FileItemViewModel.cs" />
     <Compile Include="Data\Models\DirectoryEntry.cs" />
@@ -153,10 +149,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Presentation\Screens\Applications\Pinned.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Presentation\Resources\Common.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

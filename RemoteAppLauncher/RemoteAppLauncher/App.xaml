@@ -13,7 +13,7 @@
                 <ResourceDictionary Source="/Presentation/Resources/ListBox.xaml" />
                 <ResourceDictionary Source="/Resources/Icons.xaml" />
                 <ResourceDictionary>
-                     <infrastructure:AppBootstrapper x:Key="bootstrapper" />
+                    <infrastructure:AppBootstrapper x:Key="bootstrapper" />
                  </ResourceDictionary>
              </ResourceDictionary.MergedDictionaries>
          </ResourceDictionary>
