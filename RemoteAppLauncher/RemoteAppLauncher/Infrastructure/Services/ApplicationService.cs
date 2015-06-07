@@ -57,6 +57,11 @@ namespace RemoteAppLauncher.Infrastructure.Services
         {
             Task updateTask = new Task(() =>
                 {
+                    if (!initializing)
+                    {
+                        Thread.Sleep(1000);
+                    }
+
                     var startMenuItems = PathUtility.GetAllFileEntries().Select(x => new PersistedFileItem(x)).ToList();
 
                     bool hasChangedItems = false;
@@ -104,8 +109,15 @@ namespace RemoteAppLauncher.Infrastructure.Services
                         _applications.TryRemove(toRemove.Id, out removedItem);
                     }
 
-                    if(!hasChangedItems)
+                    if (!hasChangedItems)
+                    {
+                        if (_uiContext != null)
+                            _uiContext.Post(_ => RaiseLoadingComplete(), null);
+                        else
+                            RaiseLoadingComplete();
+
                         return;
+                    }
 
                     if (_uiContext != null)
                         _uiContext.Post(_ => NotifyNewItems(initializing), null);
@@ -155,6 +167,11 @@ namespace RemoteAppLauncher.Infrastructure.Services
         private void RaiseApplicationsChanged()
         {
             _events.Publish(ApplicationsChangedEvent.Default);
+        }
+
+        private void RaiseLoadingComplete()
+        {
+            _events.Publish(new LoadingEvent(false));
         }
 
         private void UpdateFromViewModel(FileItemViewModel fileVm)

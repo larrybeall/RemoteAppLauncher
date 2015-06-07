@@ -89,6 +89,8 @@ namespace RemoteAppLauncher.Presentation.Screens
 
             _applications = newApplicationList;
             NotifyOfPropertyChange(() => Applications);
+
+            _events.Publish(new LoadingEvent(false));
         }
 
         public void ShowAllApplications()
@@ -105,6 +107,12 @@ namespace RemoteAppLauncher.Presentation.Screens
 
             ViewState = PinnedViewState;
             SearchFilter = string.Empty;
+        }
+
+        public void RefreshApplications()
+        {
+            _events.Publish(new LoadingEvent(true));
+            ApplicationService.Instance.UpdateStoredItems(false);
         }
 
         public void Handle(ApplicationExecutedEvent message)
