@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using RemoteAppLauncher.Data.Models;
 using File = System.IO.File;
 
@@ -13,6 +15,8 @@ namespace RemoteAppLauncher.Infrastructure.Utilities
         private static string _systemPath;
         private static string _controlPanelPath;
         private static string _fileExplorerPath;
+
+        
 
         public static string SystemPath 
         {

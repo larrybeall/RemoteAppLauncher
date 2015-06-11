@@ -16,6 +16,7 @@ namespace RemoteAppLauncher.Infrastructure
             // init the config manager, which will init the database if it doesn't exist.
             var config = DataConfigManager.Instance;
             ApplicationService.Instance.UpdateStoredItems(true);
+            ApplicationService.Instance.StartWindowMonitor();
 
             base.OnStartup(sender, e);
         }

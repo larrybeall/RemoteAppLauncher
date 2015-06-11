@@ -65,6 +65,9 @@
     <Reference Include="MahApps.Metro">
       <HintPath>..\packages\MahApps.Metro.0.10.0.0\lib\net40\MahApps.Metro.dll</HintPath>
     </Reference>
+    <Reference Include="ManagedWinapi">
+      <HintPath>..\packages\ManagedWinapi.0.3\ManagedWinapi.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data" />
@@ -80,6 +83,11 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="UIAutomationClient" />
+    <Reference Include="UIAutomationTypes" />
+    <Reference Include="Win32Interop.User32">
+      <HintPath>..\packages\Win32Interop.User32.1.0.1\lib\Win32Interop.User32.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
@@ -112,6 +120,7 @@
     <Compile Include="Presentation\Items\DirectoryItemViewModel.cs" />
     <Compile Include="Presentation\Items\FileItemViewModel.cs" />
     <Compile Include="Data\Models\DirectoryEntry.cs" />
+    <Compile Include="Presentation\Items\OpenItemViewModel.cs" />
     <Compile Include="Presentation\Screens\ApplicationsView.xaml.cs">
       <DependentUpon>ApplicationsView.xaml</DependentUpon>
     </Compile>
