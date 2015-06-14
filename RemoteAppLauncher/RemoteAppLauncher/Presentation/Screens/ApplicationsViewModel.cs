@@ -9,7 +9,12 @@ using System.Windows.Controls;
 
 namespace RemoteAppLauncher.Presentation.Screens
 {
-    public class ApplicationsViewModel : Screen, IHandle<ApplicationsChangedEvent>, IHandle<ApplicationExecutedEvent>
+    public class ApplicationsViewModel : 
+        Screen, 
+        IHandle<ApplicationsChangedEvent>, 
+        IHandle<ApplicationExecutedEvent>,
+        IHandle<OpenWindowsChangedEvent>,
+        IHandle<WindowActivatedEvent>
     {
         public static string PinnedViewState = "Pinned";
         public static string AllViewState = "All";
@@ -17,6 +22,7 @@ namespace RemoteAppLauncher.Presentation.Screens
         private readonly IEventAggregator _events;
         private readonly ApplicationService _applicationService;
         private List<ViewAware> _applications = new List<ViewAware>();
+        private List<ViewAware> _openWindows = new List<ViewAware>();
         private string _searchFilter;
         private double _originalWindowWidth;
         private string _viewContext;
@@ -31,6 +37,11 @@ namespace RemoteAppLauncher.Presentation.Screens
         public List<ViewAware> Applications
         {
             get { return _applications; }
+        }
+
+        public List<ViewAware> OpenWindows
+        {
+            get { return _openWindows; }
         }
 
         public string SearchFilter
@@ -124,6 +135,18 @@ namespace RemoteAppLauncher.Presentation.Screens
                 return;
 
             ShowPinnedApplications();
+        }
+
+        public void Handle(OpenWindowsChangedEvent message)
+        {
+            var openWindows = _applicationService.OpenWindows.OfType<ViewAware>().ToList();
+            _openWindows = openWindows;
+            NotifyOfPropertyChange(() => OpenWindows);
+        }
+
+        public void Handle(WindowActivatedEvent message)
+        {
+            //NotifyOfPropertyChange(() => OpenWindows);
         }
     }
 }

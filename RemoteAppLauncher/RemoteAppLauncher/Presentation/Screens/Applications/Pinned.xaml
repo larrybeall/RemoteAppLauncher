@@ -8,6 +8,7 @@
              xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
              xmlns:props="clr-namespace:RemoteAppLauncher.Presentation.AttachedProperties"
              xmlns:converters="clr-namespace:RemoteAppLauncher.Presentation.Converters"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
@@ -22,8 +23,9 @@
                 <ResourceDictionary Source="/Resources/Icons.xaml" />
                 <ResourceDictionary>
                     <converters:PinnedToGroupNameConverter x:Key="PinnedNameConverter"/>
+                    <converters:DebugConverter x:Key="DebugConverter"/>
                     <SolidColorBrush Color="{DynamicResource Gray3}" x:Key="UnderlineColor"/>
-                    
+
                     <pres:AutoRefreshCollectionViewSource props:Filters.FilterText="{Binding SearchFilter}"  Source="{Binding Applications}" Filter="SortedApplications_OnFilter" x:Key="SortedApplications">
                         <pres:AutoRefreshCollectionViewSource.SortDescriptions>
                             <scm:SortDescription PropertyName="Pinned" Direction="Descending"/>
@@ -34,19 +36,32 @@
                             <PropertyGroupDescription PropertyName="Pinned" Converter="{StaticResource PinnedNameConverter}"/>
                         </pres:AutoRefreshCollectionViewSource.GroupDescriptions>
                     </pres:AutoRefreshCollectionViewSource>
+                    <pres:AutoRefreshCollectionViewSource Source="{Binding OpenWindows}" x:Key="GroupedOpenWindows">
+                        <pres:AutoRefreshCollectionViewSource.SortDescriptions>
+                            <scm:SortDescription PropertyName="CreateTime" Direction="Ascending" />
+                        </pres:AutoRefreshCollectionViewSource.SortDescriptions>
+                        <pres:AutoRefreshCollectionViewSource.GroupDescriptions>
+                            <PropertyGroupDescription PropertyName="Path"/>
+                        </pres:AutoRefreshCollectionViewSource.GroupDescriptions>
+                    </pres:AutoRefreshCollectionViewSource>
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
-        
+
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
         <ListBox
             Grid.Row="0"
+            Grid.RowSpan="2"
             Margin="1 0 0 0"
             ItemsSource="{Binding Source={StaticResource SortedApplications}}"
             SelectionMode="Single"
@@ -91,14 +106,15 @@
                     </GroupStyle.ContainerStyle>
                 </GroupStyle>
             </ListBox.GroupStyle>
-        </ListBox> 
+        </ListBox>
 
         <Button
             Grid.Column="1"
+            Grid.Row="0"
             Width="42"
             Height="42"
             VerticalAlignment="Top"
-            Margin="0 0 -8 0"
+            Margin="12 0 -8 0"
             ToolTip="All Applications"
             micro:Message.Attach="ShowAllApplications()">
             <Button.Resources>
@@ -128,5 +144,58 @@
                 </Rectangle.Fill>
             </Rectangle>
         </Button>
+        
+        <Border 
+            Grid.Column="1" 
+            Grid.Row="1" 
+            CornerRadius="7 0 0 0" 
+            Background="{StaticResource GrayBrush2}" 
+            BorderThickness="1"
+            BorderBrush="{StaticResource GrayBrush3}"
+            ClipToBounds="True"
+            Margin="0 5 0 0">
+            <Border CornerRadius="7 0 0 0" Background="Transparent" BorderBrush="Black" BorderThickness="1" Margin="-2">
+                <Border.Effect>
+                    <DropShadowEffect ShadowDepth="0" BlurRadius="10"/>
+                </Border.Effect>
+                <ListBox
+                Margin="1 0 0 0"
+                ItemsSource="{Binding Source={StaticResource GroupedOpenWindows}}"
+                SelectionMode="Single"
+                Background="Transparent"
+                HorizontalAlignment="Stretch"
+                ScrollViewer.VerticalScrollBarVisibility="Auto"
+                ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Vertical" HorizontalAlignment="Right"/>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                    <ListBox.Resources>
+                        <ResourceDictionary>
+                            <ResourceDictionary.MergedDictionaries>
+                                <ResourceDictionary Source="/Presentation/Items/OpenItemDataTemplates.xaml"/>
+                            </ResourceDictionary.MergedDictionaries>
+                        </ResourceDictionary>
+                    </ListBox.Resources>
+                    <ListBox.Style>
+                        <Style TargetType="{x:Type ListBox}" BasedOn="{StaticResource MyStandardListBox}">
+                            <Style.Resources>
+                                <Style TargetType="{x:Type ListBoxItem}">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                                <ContentPresenter/>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </Style.Resources>
+                        </Style>
+                    </ListBox.Style>
+                </ListBox>
+            </Border>
+        </Border>
+
     </Grid>
 </UserControl>

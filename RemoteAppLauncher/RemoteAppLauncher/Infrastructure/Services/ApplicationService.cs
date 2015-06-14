@@ -10,6 +10,8 @@ using System.Linq;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
+using System.Runtime.Remoting.Channels;
 using System.Text;
 using System.Windows.Automation;
 using System.Windows.Interop;
@@ -17,7 +19,9 @@ using ManagedWinapi.Accessibility;
 using RemoteAppLauncher.Infrastructure.Utilities;
 using RemoteAppLauncher.Presentation.Items;
 using RemoteAppLauncher.Infrastructure.Events;
+using Win32Interop.Enums;
 using Win32Interop.Methods;
+using Win32Interop.Structs;
 
 namespace RemoteAppLauncher.Infrastructure.Services
 {
@@ -125,18 +129,11 @@ namespace RemoteAppLauncher.Infrastructure.Services
 
                     if (!hasChangedItems)
                     {
-                        if (_uiContext != null)
-                            _uiContext.Post(_ => RaiseLoadingComplete(), null);
-                        else
-                            RaiseLoadingComplete();
-
+                        ExecuteOnUiThread(RaiseLoadingComplete);
                         return;
                     }
 
-                    if (_uiContext != null)
-                        _uiContext.Post(_ => NotifyNewItems(initializing), null);
-                    else
-                        NotifyNewItems(initializing);
+                    ExecuteOnUiThread(() => NotifyNewItems(initializing));
                 });
 
             updateTask.Start();
@@ -145,7 +142,7 @@ namespace RemoteAppLauncher.Infrastructure.Services
         public void ExecuteApplication(FileItemViewModel file)
         {
             ProcessUtility.ExecuteProcess(file.Path);
-            _events.Publish(ApplicationExecutedEvent.Default);
+            ExecuteOnUiThread(() => _events.Publish(ApplicationExecutedEvent.Default));
 
             UpdateFromViewModel(file);
         }
@@ -167,6 +164,24 @@ namespace RemoteAppLauncher.Infrastructure.Services
 
         public void StartWindowMonitor()
         {
+            var windows = new List<IntPtr>();
+            EnumWindowsProc ewDelegate = (wnd, param) =>
+            {
+                if (wnd == IntPtr.Zero
+                    || !ShouldIncludeWindow(wnd))
+                {
+                    return true;
+                }
+
+                //HandleWindowOpenedEvent(wnd);
+                windows.Add(wnd);
+                return true;
+            };
+
+            EnumWindows(ewDelegate, IntPtr.Zero);
+
+            windows.ForEach(HandleWindowOpenedEvent);
+
             _windowEventHandler = (sender, args) =>
             {
                 var element = sender as AutomationElement;
@@ -228,6 +243,37 @@ namespace RemoteAppLauncher.Infrastructure.Services
             };
 
             closedListener.Enabled = true;
+
+            var titleChangeListener = new AccessibleEventListener
+            {
+                MinimalEventType = AccessibleEventType.EVENT_OBJECT_NAMECHANGE,
+                MaximalEventType = AccessibleEventType.EVENT_OBJECT_NAMECHANGE,
+                ThreadId = 0,
+                ProcessId = 0
+            };
+
+            titleChangeListener.EventOccurred += (sender, args) =>
+            {
+                if (!_openWindows.ContainsKey(args.HWnd) || args.ObjectID != (uint) AccessibleObjectID.OBJID_WINDOW)
+                {
+                    return;
+                }
+
+                StringBuilder titleBuilder = new StringBuilder{Length = 300};
+                User32.GetWindowText(args.HWnd, titleBuilder, 300);
+
+                if (_openWindows.ContainsKey(args.HWnd))
+                {
+                    _openWindows[args.HWnd].Name = titleBuilder.ToString();
+                }
+            };
+
+            titleChangeListener.Enabled = true;
+        }
+
+        public void ActivateWindow(OpenItemViewModel openWindowVm)
+        {
+            User32.SetForegroundWindow(openWindowVm.Hwnd);
         }
 
         private void NotifyNewItems(bool initializing)
@@ -253,6 +299,11 @@ namespace RemoteAppLauncher.Infrastructure.Services
             _events.Publish(new LoadingEvent(false));
         }
 
+        private void RaiseOpenWindowsChanged()
+        {
+            _events.Publish(OpenWindowsChangedEvent.Default);
+        }
+
         private void UpdateFromViewModel(FileItemViewModel fileVm)
         {
             Task.Factory.StartNew(() =>
@@ -262,13 +313,18 @@ namespace RemoteAppLauncher.Infrastructure.Services
             });
         }
 
-        private void HandleWindowActivatedEvent(IntPtr hwnd)
+        private void HandleWindowActivatedEvent(IntPtr hwnd, bool publishEvent = true)
         {
             if (!_openWindows.ContainsKey(hwnd)) return;
 
             foreach (var openItem in _openWindows)
             {
                 openItem.Value.Active = openItem.Key == hwnd;
+            }
+
+            if (publishEvent)
+            {
+                ExecuteOnUiThread(() => _events.Publish(WindowActivatedEvent.Default));
             }
         }
 
@@ -278,17 +334,18 @@ namespace RemoteAppLauncher.Infrastructure.Services
 
             OpenItemViewModel removedItem;
             _openWindows.TryRemove(hwnd, out removedItem);
+            ExecuteOnUiThread(RaiseOpenWindowsChanged);
         }
 
         private void HandleWindowOpenedEvent(IntPtr hwnd)
         {
-            if(Process.GetCurrentProcess().MainWindowHandle == hwnd) return;
+            if (Process.GetCurrentProcess().MainWindowHandle == hwnd) return;
             if (_openWindows.ContainsKey(hwnd)) return;
 
             var activatedWindow = User32.GetForegroundWindow();
             var active = activatedWindow == hwnd;
 
-            StringBuilder windowTitleBuilder = new StringBuilder();
+            StringBuilder windowTitleBuilder = new StringBuilder {Length = 300};
             User32.GetWindowText(hwnd, windowTitleBuilder, 300);
 
             var path = ProcessUtility.GetPathFromHandle(hwnd);
@@ -298,8 +355,69 @@ namespace RemoteAppLauncher.Infrastructure.Services
 
             if (active)
             {
-                HandleWindowActivatedEvent(hwnd);
+                HandleWindowActivatedEvent(hwnd, false);
             }
+            ExecuteOnUiThread(RaiseOpenWindowsChanged);
         }
+
+        private void ExecuteOnUiThread(System.Action toExecute)
+        {
+            if (_uiContext != null)
+                _uiContext.Post(_ => toExecute(), null);
+            else
+                RaiseLoadingComplete();
+        }
+
+        private bool ShouldIncludeWindow(IntPtr hwnd)
+        {
+            if (!User32.IsWindowVisible(hwnd))
+            {
+                return false;
+            }
+
+            IntPtr hwndWalk = IntPtr.Zero;
+            var hwndTry = User32.GetAncestor(hwnd, GA.GA_ROOTOWNER);
+            while (hwndTry != hwndWalk)
+            {
+                hwndWalk = hwndTry;
+                hwndTry = User32.GetLastActivePopup(hwndWalk);
+                if (User32.IsWindowVisible(hwndTry))
+                {
+                    break;
+                }
+            }
+            if (hwndWalk != hwnd)
+            {
+                return false;
+            }
+
+            TITLEBARINFO titleBarInfo = new TITLEBARINFO();
+            User32.GetTitleBarInfo(hwnd, ref titleBarInfo);
+            if ((titleBarInfo.rgstate[0] & STATE_SYSTEM_INVISIBLE) == 1)
+            {
+                return false;
+            }
+
+            //if ((User32.GetWindowLong(hwnd, GWL_EXSTYLE) & (uint)WS_EX.WS_EX_TOOLWINDOW) == 1)
+            //{
+            //    return false;
+            //}
+
+            if (((uint) User32.GetWindowLong(hwnd, GWL_STYLE) &
+                 ((uint) WS.WS_BORDER | (uint) WS.WS_CHILD | (uint) WS.WS_VISIBLE)) !=
+                ((uint) WS.WS_BORDER | (uint) WS.WS_VISIBLE))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        [DllImport("user32.dll")]
+        private static extern bool EnumWindows(EnumWindowsProc enumProc, IntPtr lParam);
+        private delegate bool EnumWindowsProc(IntPtr hWnd, IntPtr lParam);
+        private uint STATE_SYSTEM_INVISIBLE = 0x00008000;
+        private const int GWL_EXSTYLE = -20;
+        private const int GWL_STYLE = -16;
     }
 }

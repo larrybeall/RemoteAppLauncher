@@ -106,10 +106,13 @@
     <Compile Include="Infrastructure\Events\ApplicationsChangedEvent.cs" />
     <Compile Include="Infrastructure\Events\InitializationCompleteEvent.cs" />
     <Compile Include="Infrastructure\Events\LoadingEvent.cs" />
+    <Compile Include="Infrastructure\Events\OpenWindowsChangedEvent.cs" />
+    <Compile Include="Infrastructure\Events\WindowActivatedEvent.cs" />
     <Compile Include="Infrastructure\Services\ApplicationService.cs" />
     <Compile Include="Infrastructure\Utilities\HashUtility.cs" />
     <Compile Include="Infrastructure\Services\EventService.cs" />
     <Compile Include="Presentation\AutoRefreshCollectionViewSource.cs" />
+    <Compile Include="Presentation\Converters\ActiveColorConverter.cs" />
     <Compile Include="Presentation\Converters\DebugConverter.cs" />
     <Compile Include="Presentation\Converters\ObjectToTypeConverter.cs" />
     <Compile Include="Infrastructure\Utilities\IconUtility.cs" />
@@ -141,6 +144,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Infrastructure\AppBootstrapper.cs" />
+    <Page Include="Presentation\Items\OpenItemDataTemplates.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Presentation\Items\BriefItemDataTemplates.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

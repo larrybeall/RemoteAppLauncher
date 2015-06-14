@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using RemoteAppLauncher.Data.Models;
 using Caliburn.Micro;
 using System.Windows.Media;
@@ -18,14 +19,18 @@ namespace RemoteAppLauncher.Presentation.Items
         private string _id;
         private bool _pinned;
         private long _accesses;
+        private Func<string, ImageSource> _iconRetriever; 
 
         public FileItemViewModel()
         {
+            SetIconRetriever();
         }
 
         public FileItemViewModel(PersistedFileItem entry)
             : base(entry.Name)
         {
+            SetIconRetriever();
+
             Path = entry.Path;
             Directory = entry.Directory;
             Pinned = entry.Pinned;
@@ -56,7 +61,7 @@ namespace RemoteAppLauncher.Presentation.Items
 
                 if (!string.IsNullOrEmpty(_path))
                 {
-                    ImageSource = IconUtility.GetLargeIcon(_path);
+                    ImageSource = _iconRetriever(_path);
                     NotifyOfPropertyChange(() => ImageSource);
                 }
             }
@@ -126,6 +131,17 @@ namespace RemoteAppLauncher.Presentation.Items
         public void SetIconPath()
         {
             ApplicationService.Instance.SetIconPath(this);
+        }
+
+        protected void SetIconRetriever(Func<string, ImageSource> retriever = null)
+        {
+            if (retriever == null)
+            {
+                _iconRetriever = IconUtility.GetLargeIcon;
+                return;
+            }
+
+            _iconRetriever = retriever;
         }
     }
 }
